@@ -6,14 +6,12 @@
 
 ## Introdução / Introduction
  
-Escreva uma pequena introdução sobre o trabalho.
-Write a simple introduction about your project.
+Base de dados relativa à gestão de uma empresa de construção civil. Esta foca-se, sobretudo, nos empregados, nas obras e no seu material respetivo. Para além disso, existe uma gestão de encomendas aos fornecedores, caso não exista material suficiente em armazém.
 
 ## ​Análise de Requisitos / Requirements
 
 
 ## DER
-
 
 ![DER Diagram!](der.png "AnImage")
 
