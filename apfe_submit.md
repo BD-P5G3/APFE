@@ -1,8 +1,8 @@
 # BD: Trabalho Prático APFE
 
-**Grupo**: PXGY
-- António Fictício, MEC: 1000
-- João Inventado, MEC: 2000
+**Grupo**: P5G3
+- José Gameiro, MEC: 108840
+- Rúben Garrido, MEC: 107927
 
 ## Introdução / Introduction
  
@@ -15,8 +15,8 @@ Write a simple introduction about your project.
 ## DER
 
 
-![DER Diagram!](der.jpg "AnImage")
+![DER Diagram!](der.png "AnImage")
 
 ## ER
 
-![ER Diagram!](er.jpg "AnImage")
+![ER Diagram!](er.png "AnImage")
