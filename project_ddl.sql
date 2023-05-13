@@ -1,0 +1,163 @@
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.REL_OBRA_ENCOMENDA;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.REL_OBRA_MATERIAL;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.ENCOMENDA;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.FORNECEDOR;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.OBRA;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.CLIENTE;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.SERVICO;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.CEO;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.EMPREGADO;
+DROP TABLE IF EXISTS EMPRESA_CONSTRUCAO.DEPARTAMENTO;
+DROP SCHEMA IF EXISTS EMPRESA_CONSTRUCAO;
+GO;
+
+CREATE SCHEMA EMPRESA_CONSTRUCAO;
+GO;
+
+CREATE TABLE EMPRESA_CONSTRUCAO.DEPARTAMENTO (
+    id              INT             NOT NULL        PRIMARY KEY,
+    nome            VARCHAR(15)
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.EMPREGADO (
+    nif                 INT             NOT NULL        PRIMARY KEY,
+    nome_proprio        VARCHAR(15)     NOT NULL,
+    apelido             VARCHAR(15)     NOT NULL,
+    email               VARCHAR(25)     NOT NULL,
+    telefone            INT             NOT NULL,
+    morada              VARCHAR(50),
+    genero              CHAR,
+    data_nascimento     DATE,
+    salario             DECIMAL(10,2)   DEFAULT 0,
+    id_departamento     INT             NOT NULL,
+
+    FOREIGN KEY (id_departamento) REFERENCES EMPRESA_CONSTRUCAO.DEPARTAMENTO(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.CEO (
+    nif_empregado       INT             NOT NULL        PRIMARY KEY,
+
+    FOREIGN KEY (nif_empregado) REFERENCES EMPRESA_CONSTRUCAO.EMPREGADO
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.SERVICO (
+    id                  INT             NOT NULL        PRIMARY KEY,
+    categoria           VARCHAR(20)     NOT NULL,
+    nome                VARCHAR(20),
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.CLIENTE (
+    nif                 INT             NOT NULL        PRIMARY KEY,
+    nome_proprio        VARCHAR(15)     NOT NULL,
+    apelido             VARCHAR(15)     NOT NULL,
+    email               VARCHAR(50)     NOT NULL,
+    telefone            INT             NOT NULL,
+    morada              VARCHAR(50)
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.OBRA (
+    id                  INT             NOT NULL        PRIMARY KEY,
+    localizacao         VARCHAR(50)     NOT NULL,
+    data_inicio         DATE            NOT NULL,
+    data_fim            DATE,
+    nif_cliente         INT             NOT NULL,
+
+    FOREIGN KEY (nif_cliente) REFERENCES EMPRESA_CONSTRUCAO.CLIENTE(nif)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO (
+    id_obra             INT             NOT NULL,
+    id_servico          INT             NOT NULL,
+
+    PRIMARY KEY (id_obra,id_servico),
+
+    FOREIGN KEY (id_obra) REFERENCES EMPRESA_CONSTRUCAO.OBRA(id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_servico) REFERENCES EMPRESA_CONSTRUCAO.SERVICO(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO (
+    id_obra             INT             NOT NULL,
+    nif_empregado       INT             NOT NULL,
+    dia                 DATE            NOT NULL,
+    horas               TIME            NOT NULL,
+
+    PRIMARY KEY (id_obra, nif_empregado),
+
+    FOREIGN KEY (id_obra) REFERENCES EMPRESA_CONSTRUCAO.OBRA(id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (nif_empregado) REFERENCES EMPRESA_CONSTRUCAO.CLIENTE(nif)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO (
+    id                  INT             NOT NULL        PRIMARY KEY,
+    categoria           VARCHAR(20)     NOT NULL,
+    nome                VARCHAR(40)     NOT NULL,
+    unidades_armazem    INT             DEFAULT 0
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.FORNECEDOR (
+    nif                 INT             NOT NULL        PRIMARY KEY,
+    nome                VARCHAR(15)     NOT NULL,
+    telefone            INT             NOT NULL,
+    email               VARCHAR(50)     NOT NULL,
+    morada              VARCHAR(50),
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.ENCOMENDA (
+    id                  INT             NOT NULL        PRIMARY KEY,
+    data                DATE            NOT NULL,
+    nif_fornecedor      INT             NOT NULL,
+    id_obra             INT             NOT NULL,
+
+    FOREIGN KEY (nif_fornecedor) REFERENCES EMPRESA_CONSTRUCAO.FORNECEDOR(nif)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_obra) REFERENCES EMPRESA_CONSTRUCAO.OBRA(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+)
+
+CREATE TABLE EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL (
+    id_encomenda        INT             NOT NULL,
+    id_material         INT             NOT NULL,
+    custo               DECIMAL(10,2)   NOT NULL,
+
+    PRIMARY KEY(id_encomenda, id_material),
+
+    FOREIGN KEY (id_encomenda) REFERENCES EMPRESA_CONSTRUCAO.ENCOMENDA(id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_material) REFERENCES EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_MATERIAL (
+    id_obra             INT             NOT NULL,
+    id_material         INT             NOT NULL,
+
+    PRIMARY KEY (id_obra, id_material),
+
+    FOREIGN KEY (id_obra) REFERENCES EMPRESA_CONSTRUCAO.OBRA(id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_material) REFERENCES EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_ENCOMENDA (
+    id_obra             INT             NOT NULL,
+    id_encomenda        INT             NOT NULL,
+
+    PRIMARY KEY(id_obra, id_encomenda),
+
+    FOREIGN KEY (id_obra) REFERENCES EMPRESA_CONSTRUCAO.OBRA(id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_encomenda) REFERENCES EMPRESA_CONSTRUCAO.ENCOMENDA(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
