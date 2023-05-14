@@ -33,16 +33,16 @@ CREATE TABLE EMPRESA_CONSTRUCAO.EMPREGADO (
     genero              CHAR,
     data_nascimento     DATE,
     salario             DECIMAL(10,2)   DEFAULT 0,
-    id_departamento     INT             NOT NULL,
+    id_departamento     INT,
 
     FOREIGN KEY (id_departamento) REFERENCES EMPRESA_CONSTRUCAO.DEPARTAMENTO(id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE EMPRESA_CONSTRUCAO.CEO (
-    nif_empregado       INT             NOT NULL        PRIMARY KEY,
+    nif_empregado       INT             PRIMARY KEY,
 
-    FOREIGN KEY (nif_empregado) REFERENCES EMPRESA_CONSTRUCAO.EMPREGADO
+    FOREIGN KEY (nif_empregado) REFERENCES EMPRESA_CONSTRUCAO.EMPREGADO(nif)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -66,15 +66,15 @@ CREATE TABLE EMPRESA_CONSTRUCAO.OBRA (
     localizacao         VARCHAR(50)     NOT NULL,
     data_inicio         DATE            NOT NULL,
     data_fim            DATE,
-    nif_cliente         INT             NOT NULL,
+    nif_cliente         INT,
 
     FOREIGN KEY (nif_cliente) REFERENCES EMPRESA_CONSTRUCAO.CLIENTE(nif)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO (
-    id_obra             INT             NOT NULL,
-    id_servico          INT             NOT NULL,
+    id_obra             INT,
+    id_servico          INT,
 
     PRIMARY KEY (id_obra,id_servico),
 
@@ -85,8 +85,8 @@ CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO (
 );
 
 CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO (
-    id_obra             INT             NOT NULL,
-    nif_empregado       INT             NOT NULL,
+    id_obra             INT,
+    nif_empregado       INT,
     dia                 DATE            NOT NULL,
     horas               TIME            NOT NULL,
 
@@ -94,7 +94,7 @@ CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO (
 
     FOREIGN KEY (id_obra) REFERENCES EMPRESA_CONSTRUCAO.OBRA(id)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (nif_empregado) REFERENCES EMPRESA_CONSTRUCAO.CLIENTE(nif)
+    FOREIGN KEY (nif_empregado) REFERENCES EMPRESA_CONSTRUCAO.EMPREGADO(nif)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -116,48 +116,48 @@ CREATE TABLE EMPRESA_CONSTRUCAO.FORNECEDOR (
 CREATE TABLE EMPRESA_CONSTRUCAO.ENCOMENDA (
     id                  INT             NOT NULL        PRIMARY KEY,
     data                DATE            NOT NULL,
-    nif_fornecedor      INT             NOT NULL,
-    id_obra             INT             NOT NULL,
+    nif_fornecedor      INT,
+    id_obra             INT,
 
     FOREIGN KEY (nif_fornecedor) REFERENCES EMPRESA_CONSTRUCAO.FORNECEDOR(nif)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (id_obra) REFERENCES EMPRESA_CONSTRUCAO.OBRA(id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE SET NULL ON UPDATE CASCADE
 )
 
 CREATE TABLE EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL (
-    id_encomenda        INT             NOT NULL,
-    id_material         INT             NOT NULL,
+    id_encomenda        INT,
+    id_material         INT,
     custo               DECIMAL(10,2)   NOT NULL,
 
     PRIMARY KEY(id_encomenda, id_material),
 
     FOREIGN KEY (id_encomenda) REFERENCES EMPRESA_CONSTRUCAO.ENCOMENDA(id)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE NO ACTION ON UPDATE CASCADE,
     FOREIGN KEY (id_material) REFERENCES EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO(id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_MATERIAL (
-    id_obra             INT             NOT NULL,
-    id_material         INT             NOT NULL,
+    id_obra             INT,
+    id_material         INT,
 
     PRIMARY KEY (id_obra, id_material),
 
     FOREIGN KEY (id_obra) REFERENCES EMPRESA_CONSTRUCAO.OBRA(id)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE NO ACTION ON UPDATE CASCADE,
     FOREIGN KEY (id_material) REFERENCES EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO(id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_ENCOMENDA (
-    id_obra             INT             NOT NULL,
-    id_encomenda        INT             NOT NULL,
+    id_obra             INT,
+    id_encomenda        INT,
 
     PRIMARY KEY(id_obra, id_encomenda),
 
     FOREIGN KEY (id_obra) REFERENCES EMPRESA_CONSTRUCAO.OBRA(id)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (id_encomenda) REFERENCES EMPRESA_CONSTRUCAO.ENCOMENDA(id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE SET NULL ON UPDATE CASCADE
 );
