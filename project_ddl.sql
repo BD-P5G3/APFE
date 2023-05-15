@@ -20,7 +20,7 @@ GO;
 
 CREATE TABLE EMPRESA_CONSTRUCAO.DEPARTAMENTO (
     id              INT             NOT NULL        PRIMARY KEY,
-    nome            VARCHAR(15)
+    nome            VARCHAR(100)
 );
 
 CREATE TABLE EMPRESA_CONSTRUCAO.EMPREGADO (
