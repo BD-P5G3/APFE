@@ -402,31 +402,29 @@ choose = [  538915867,
             856146437,
             129884860]
 
+choose_service = [201101, 201102, 201103, 201104, 201105, 201106, 201107, 201108, 201109, 201110, 201111,201112, 201113, 201114, 201115, 'NULL']
+
 # Cria uma instância do Faker
 fake = Faker()
 
-id = 19940000
-
-# Lista de departamentos fictícios
-departamentos = ["Vendas", "Marketing", "RH", "Finanças", "TI"]
-
 # Gera dados fictícios para preencher a tabela
 def generate_fake_data(num_rows):
+    id_obra = 19940000
     data = []
     for _ in range(num_rows):
-        id = id + 1
-        localizacao = fake.address().replace("\n", ", ")
-        start_date = fake.past_date()
-        end_date = fake.future_date(end_date='+30d')
-        nif_client = random.choice(choose)
-        data.append((id,localizacao, start_date, end_date, nif_client))
+        id_obra = id_obra + 1
+        # localizacao = fake.address().replace("\n", ", ")
+        # start_date = fake.past_date()
+        # end_date = fake.future_date(end_date='+30d')
+        id_service = random.choice(choose_service)
+        data.append((id_obra, id_service))
     return data
 
 # Cria comandos SQL para inserir os dados na tabela
 def generate_sql_insert_commands(data):
     commands = []
     for row in data:
-        command = f"({row[0]}, '{row[1]}', '{row[2]}', '{row[3]}', {row[4]});"
+        command = f"({row[0]}, {row[1]}),"
         commands.append(command)
     return commands
 
