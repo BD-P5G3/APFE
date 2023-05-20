@@ -121,9 +121,13 @@ choose_worker = [
     953832401,
 ]
 
+choose_obra = []
+
+for i in range(0, 91):
+    choose_obra.append(19940000 + i)
+
 # Gera dados fictícios para preencher a tabela
 def generate_fake_data(num_rows):
-    id_obra = 19940000
     data = []
     for _ in range(num_rows):
         id_obra = id_obra + 1
