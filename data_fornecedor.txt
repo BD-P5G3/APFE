@@ -1,0 +1,5 @@
+(817439603, 'ConstruMat', 20374914, 'constrmat@ua.pt', 'Rua dos Materiais, 123, Cidade Nova, Estado ABC, CEP 12345-678'),
+(208576294, 'Casa da Construção', 'casac@ua.pt', 'Avenida das Obras, 456, Bairro Construtivo, Estado XYZ, CEP 98765-432'),
+(643872905, 'Materiais & Cia', 'cia@ua.pt', 'Rua dos Mestres, 789, Vila das Edificações, Estado QWE, CEP 54321-876'),
+(965781420, 'MegaConstrução', 'mega.co@ua.pt', 'Rua das Estruturas, 987, Loteamento Grandioso, Estado UVW, CEP 87654-321'),
+(312095648, 'Fornecedora Construlíder', 'forn.lider@ua.pt', 'Rua das Ferragens, 321, Loteamento Residencial, Estado MNO, CEP 56789-012')

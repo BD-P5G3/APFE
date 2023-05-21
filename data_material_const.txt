@@ -1,0 +1,15 @@
+(1997001, 'Fundações e Estruturas', 'Blocos de Cimento', 150),
+(1997002, 'Revestimentos', 'Pedras Naturais', 70),
+(1997003, 'Acabamentos', 'Portas', 340),
+(1997004, 'Instalações Elétricas', 'Disjuntores e Quadros de Distribuição', 935),
+(1997005, 'Intalações Hidráulicas', 'Tubos PVC', 485).
+(1997006, 'Corbertura e Telhados', 'Telhas Cerâmicas ou Metálicas', 639),
+(1997007, 'Ferramentas Manuais', 'Martelos', 1548),
+(1997008, 'Ferramentas Elétricas', 'Berbequins', 97),
+(1997009, 'Equipamentos de Proteção', 'Capacetes', 639),
+(1997010, 'Equipamentos de Medição', 'Fitas Métricas', 540),
+(1997011, 'Fundações e Estruturas', 'Sacos de Cimento', 761),
+(1997012, 'Acabamentos', 'Latas de Tinta', 330),
+(1997013, 'Instalações Elétricas', 'Cabos Elétricos', 142),
+(1997014, 'Ferramentas Manuais', 'Chaves', 710),
+(1997015, 'Ferramentas Elétricas', 'Serras Elétricas', 40)

@@ -123,6 +123,55 @@ choose_worker = [
 
 choose_obra = []
 
+choose_fornecedor = [
+    817439603,
+    208576294,
+    643872905,
+    965781420,
+    312095648,
+]
+
+choose_material = [
+    1997001,
+    1997002,
+    1997003,
+    1997004,
+    1997005,
+    1997006,
+    1997007,
+    1997008,
+    1997009,
+    1997010,
+    1997011,
+    1997012,
+    1997013,
+    1997014,
+    1997015,
+]
+
+choose_encomenda = [
+    1991001,
+    1991002,
+    1991003,
+    1991004,
+    1991005,
+    1991006,
+    1991007,
+    1991008,
+    1991009,
+    1991010,
+    1991011,
+    1991012,
+    1991013,
+    1991014,
+    1991015,
+    1991016,
+    1991017,
+    1991018,
+    1991019,
+    1991020,
+]
+
 for i in range(0, 91):
     choose_obra.append(19940000 + i)
 
@@ -130,12 +179,9 @@ for i in range(0, 91):
 def generate_fake_data(num_rows):
     data = []
     for _ in range(num_rows):
+        id_encomenda = random.choice(choose_encomenda)
         id_obra = random.choice(choose_obra)
-        # localizacao = fake.address().replace("\n", ", ")
-        # start_date = fake.past_date()
-        # end_date = fake.future_date(end_date='+30d')
-        nif_worker = random.choice(choose_worker)
-        data.append((id_obra,nif_worker))
+        data.append((id_obra, id_encomenda))
 
     return data
 
@@ -148,7 +194,7 @@ def generate_sql_insert_commands(data):
     return commands
 
 # Número de linhas de dados fictícios a serem geradas
-num_rows = 90
+num_rows = 50
 
 # Gera os dados fictícios
 fake_data = generate_fake_data(num_rows)
