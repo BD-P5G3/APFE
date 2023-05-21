@@ -49,7 +49,7 @@ CREATE TABLE EMPRESA_CONSTRUCAO.CLIENTE (
 
 CREATE TABLE EMPRESA_CONSTRUCAO.OBRA (
     id                  INT             NOT NULL        PRIMARY KEY,
-    localizacao         VARCHAR(50)     NOT NULL,
+    localizacao         VARCHAR(200)     NOT NULL,
     data_inicio         DATE            NOT NULL,
     data_fim            DATE,
     nif_cliente         INT,
@@ -86,17 +86,17 @@ CREATE TABLE EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO (
 
 CREATE TABLE EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO (
     id                  INT             NOT NULL        PRIMARY KEY,
-    categoria           VARCHAR(20)     NOT NULL,
-    nome                VARCHAR(40)     NOT NULL,
+    categoria           VARCHAR(50)     NOT NULL,
+    nome                VARCHAR(60)     NOT NULL,
     unidades_armazem    INT             DEFAULT 0
 );
 
 CREATE TABLE EMPRESA_CONSTRUCAO.FORNECEDOR (
     nif                 INT             NOT NULL        PRIMARY KEY,
-    nome                VARCHAR(15)     NOT NULL,
+    nome                VARCHAR(40)     NOT NULL,
     telefone            INT             NOT NULL,
-    email               VARCHAR(50)     NOT NULL,
-    morada              VARCHAR(50),
+    email               VARCHAR(70)     NOT NULL,
+    morada              VARCHAR(300),
 );
 
 CREATE TABLE EMPRESA_CONSTRUCAO.ENCOMENDA (
