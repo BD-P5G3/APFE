@@ -130,7 +130,7 @@ for i in range(0, 91):
 def generate_fake_data(num_rows):
     data = []
     for _ in range(num_rows):
-        id_obra = id_obra + 1
+        id_obra = random.choice(choose_obra)
         # localizacao = fake.address().replace("\n", ", ")
         # start_date = fake.past_date()
         # end_date = fake.future_date(end_date='+30d')
