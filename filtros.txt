@@ -1,0 +1,58 @@
+departamento:
+- nome
+- id
+
+empregado:
+- nome (e apelido, claro)
+- data de nascimento
+- género
+- salário (tipo acima/abaixo de x)
+
+serviço:
+- categoria
+- id de departamento
+
+cliente:
+- nome (inclui apelido)
+
+obra:
+- localização
+- data de início
+- data de fim
+- nif cliente
+
+na data de início e de fim, pode ser em ranges (tipo, se os dois estiverem definidos nos argumentos de entrada, então é nesse intervalo; se a data de início não estiver definida, é para filtrar obras até à data de fim; se a data de fim não estiver definida, então é obras a partir da data de início)
+
+obra-serviço:
+- filtrar por obra
+- filtrar por serviço
+
+where bla bla bla
+ obra-empregado:
+- filtrar por obra
+- por empregado
+
+será necessário fazer um filtro para um determinado dia ou range de dias?
+ material de construção:
+- categoria
+- nome
+- unidades em armazém
+
+fornecedor:
+- nome
+
+encomenda:
+- data (seja data específica ou range de datas)
+- fornecedor (através do nif)
+- obra (através do id)
+
+encomenda-material:
+- filtrar por encomenda
+- por material
+obra-material:
+- filtrar por obra
+- por material
+
+obra-encomenda:
+- filtrar por obra
+- por encomenda

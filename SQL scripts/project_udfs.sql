@@ -34,6 +34,7 @@ SELECT * FROM getDepartamentoById(200410)
 DROP FUNCTION IF EXISTS getEmpregadoByName;
 DROP FUNCTION IF EXISTS getEmpregadoByBirthDate;
 DROP FUNCTION IF EXISTS getEmpregadoBySex;
+DROP FUNCTION IF EXISTS getEmpregadoBySalary;
 
 -- Filtrar empregados pelo primeiro nome e apelido
 GO
@@ -86,5 +87,16 @@ GO
 -- Test
 SELECT * FROM getEmpregadoBySex('M');
 
+-- Filtrar os empregados por salário
+GO
+CREATE FUNCTION getEmpregadoBySalary(@salary DECIMAL(10,2)) RETURNS TABLE
+AS
+    RETURN (
+        SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO
+        WHERE salario > @salary
+    );
+GO
 
+-- Test
+SELECT * FROM getEmpregadoBySalary(1200.67)
 
