@@ -1,18 +1,18 @@
-departamento:
+departamento:        <------------------------ done
 - nome
 - id
 
-empregado:
+empregado:            <------------------------ done
 - nome (e apelido, claro)
 - data de nascimento
 - género
 - salário (tipo acima/abaixo de x)
 
-serviço:
+serviço:              <------------------------ done
 - categoria
 - id de departamento
 
-cliente:
+cliente:              <------------------------ done
 - nome (inclui apelido)
 
 obra:

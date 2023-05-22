@@ -100,3 +100,87 @@ GO
 -- Test
 SELECT * FROM getEmpregadoBySalary(1200.67)
 
+
+
+-- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.SERVICO ----------------------------------
+
+DROP FUNCTION IF EXISTS getServicoByCategory;
+DROP FUNCTION IF EXISTS getServicoByDepId;
+
+-- Filtrar os serviços por categoria
+GO
+CREATE FUNCTION getServicoByCategory(@serv_cat VARCHAR(50)) RETURNS TABLE
+AS
+    RETURN (
+        SELECT * FROM  EMPRESA_CONSTRUCAO.SERVICO
+        WHERE categoria = @serv_cat
+    );
+GO
+
+-- Test
+SELECT * FROM getServicoByCategory('Construção Sustentável');
+
+-- Filtrar os serviços pelo id do departamento correspondente
+GO
+CREATE FUNCTION  getServicoByDepId(@dep_id INT) RETURNS TABLE
+AS
+    RETURN (
+        SELECT * FROM EMPRESA_CONSTRUCAO.SERVICO
+        WHERE id_departamento = @dep_id
+    );
+GO
+
+-- Test
+SELECT * FROM getServicoByDepId(20045);
+
+-- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.CLIENTE ----------------------------------
+
+DROP FUNCTION IF EXISTS getClientByName;
+
+-- Filtrar empregados pelo primeiro nome e apelido
+GO
+CREATE FUNCTION getClientByName (
+    @client_first_name VARCHAR(20),
+    @client_last_name VARCHAR(20)
+) RETURNS TABLE
+AS
+    RETURN (
+        SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE
+        WHERE (@client_first_name IS NULL OR nome_proprio = @client_first_name)
+        AND (@client_last_name IS NULL OR apelido = @client_last_name)
+    );
+GO
+
+-- Test
+SELECT * FROM getClientByName('Katelyn','Solis')
+
+-- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.OBRA ----------------------------------
+
+DROP FUNCTION IF EXISTS getObraByLocation;
+DROP FUNCTION IF EXISTS getObraByClientNif;
+
+-- Filtrar as obras por localização
+GO
+CREATE FUNCTION getObraByLocation(@ob_location VARCHAR(200)) RETURNS TABLE
+AS
+    RETURN (
+        SELECT * FROM EMPRESA_CONSTRUCAO.OBRA
+        WHERE localizacao = @ob_location
+    );
+GO
+
+-- Test
+SELECT * FROM getObraByLocation ('45102 Monica Mission Apt. 080, Stephaniechester, KS 00774');
+
+-- Filtrar as obras por nif do cliente
+GO
+CREATE FUNCTION getObraByClientNif(@client_nif INT) RETURNS TABLE
+AS
+    RETURN (
+        SELECT * FROM EMPRESA_CONSTRUCAO.OBRA
+        WHERE nif_cliente = @client_nif
+    );
+GO
+
+-- Test
+SELECT * FROM getObraByClientNif(111356719)
