@@ -15,7 +15,7 @@ serviço:              <------------------------ done
 cliente:              <------------------------ done
 - nome (inclui apelido)
 
-obra:
+obra:                 <------------------------ done
 - localização
 - data de início
 - data de fim
@@ -23,22 +23,22 @@ obra:
 
 na data de início e de fim, pode ser em ranges (tipo, se os dois estiverem definidos nos argumentos de entrada, então é nesse intervalo; se a data de início não estiver definida, é para filtrar obras até à data de fim; se a data de fim não estiver definida, então é obras a partir da data de início)
 
-obra-serviço:
+obra-serviço:         <------------------------ done
 - filtrar por obra
 - filtrar por serviço
 
-where bla bla bla
- obra-empregado:
+
+obra-empregado:       <------------------------ done
 - filtrar por obra
 - por empregado
 
 será necessário fazer um filtro para um determinado dia ou range de dias?
- material de construção:
+ material de construção:    <------------------------ done
 - categoria
 - nome
 - unidades em armazém
 
-fornecedor:
+fornecedor:             <------------------------ done
 - nome
 
 encomenda:
