@@ -1,42 +1,29 @@
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.DEPARTAMENTO ----------------------------------
 
-DROP FUNCTION IF EXISTS getDepartamentoByName;
 DROP FUNCTION IF EXISTS getDepartamentoById;
-
-
--- Filtrar os departamentos por nome ao ser dado como argumento um nome do departamento
-GO
-CREATE FUNCTION getDepartamentoByName (@dep_name VARCHAR(100)) RETURNS TABLE
-AS
-    RETURN(SELECT * FROM EMPRESA_CONSTRUCAO.DEPARTAMENTO
-            WHERE nome = @dep_name
-    )
-GO
-
--- Test
-SELECT * FROM getDepartamentoByName('Departamento de Engenharia Civil')
-
 
 -- Filtrar os departamentos por id ao ser dado como argumento um id do departamento
 GO
 CREATE FUNCTION getDepartamentoById (@dep_id INT) RETURNS TABLE
 AS
-    RETURN(SELECT * FROM EMPRESA_CONSTRUCAO.DEPARTAMENTO
-            WHERE id = @dep_id
+    RETURN (
+        SELECT DEP.nome AS Departamento_nome, E.nome_proprio AS Emp_nome_proprio, E.apelido AS Emp_apelido, E.email AS Emp_email, S.id_S AS Serv_id, S.categoria AS SER_categoria
+        FROM EMPRESA_CONSTRUCAO.DEPARTAMENTO AS DEP
+        JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON DEP.id = E.id_departamento
+        JOIN EMPRESA_CONSTRUCAO.SERVICO AS S ON E.id_departamento = S.id_departamento
+        WHERE id = @dep_id
     )
 GO
 
 -- Test
-SELECT * FROM getDepartamentoById(200410)
+SELECT * FROM getDepartamentoById(20041)
 
 
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.EMPREGADO ----------------------------------
 
 DROP FUNCTION IF EXISTS getEmpregadoByName;
-DROP FUNCTION IF EXISTS getEmpregadoByBirthDate;
-DROP FUNCTION IF EXISTS getEmpregadoBySex;
-DROP FUNCTION IF EXISTS getEmpregadoBySalary;
+DROP FUNCTION IF EXISTS getEmpregadoBySexBirthSalary;
 
 -- Filtrar empregados pelo primeiro nome e apelido
 GO
@@ -44,103 +31,42 @@ CREATE FUNCTION getEmpregadoByName(
     @emp_first_name VARCHAR(20),
     @emp_last_name VARCHAR(20)
 ) RETURNS TABLE
-AS RETURN
-    (
+AS
+    RETURN (
         SELECT *
         FROM EMPRESA_CONSTRUCAO.EMPREGADO
-        WHERE (@emp_first_name IS NULL OR nome_proprio = @emp_first_name)
-        AND (@emp_last_name IS NULL OR apelido = @emp_last_name)
+        WHERE (@emp_first_name IS NULL OR nome_proprio LIKE @emp_first_name + '%')
+        AND (@emp_last_name IS NULL OR apelido LIKE  @emp_last_name + '%')
     );
 GO
 
 -- Tests
-SELECT * FROM getEmpregadoByName('José', NULL)
+SELECT * FROM getEmpregadoByName('Jo', NULL)
 SELECT * FROM getEmpregadoByName(NULL, NULL)
-SELECT * FROM getEmpregadoByName(NULL, 'Miranda')
+SELECT * FROM getEmpregadoByName(NULL, 'Mir')
 SELECT * FROM getEmpregadoByName('Rúben', 'Gameiro')
 
 
--- Filtrar os empregados por data de nascimento
+-- Filtrar os empregados por género/data de nascimento/salário
 GO
-CREATE FUNCTION getEmpregadoByBirthDate(@emp_birth DATE) RETURNS TABLE
+CREATE FUNCTION getEmpregadoBySexBirthSalary(@sex CHAR, @birth_date DATE, @salary DECIMAL(10,2)) RETURNS TABLE
 AS
     RETURN (
         SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO
-        WHERE data_nascimento = @emp_birth
-    );
+        WHERE (@sex IS NULL OR genero = @sex) AND
+        (@birth_date IS NULL OR data_nascimento >= @birth_date) AND
+        (@salary IS NULL OR salario >= @salary)
+    )
 GO
 
--- Test
-SELECT * FROM getEmpregadoByBirthDate('1973-11-14')
-
-
--- Filtrar os empregados por Género
-GO
-CREATE FUNCTION getEmpregadoBySex(@emp_sex CHAR) RETURNS TABLE
-AS
-    RETURN (
-        SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO
-        WHERE genero = @emp_sex
-    );
-GO
-
--- Test
-SELECT * FROM getEmpregadoBySex('M');
-
-
--- Filtrar os empregados por salário
-GO
-CREATE FUNCTION getEmpregadoBySalary(@salary DECIMAL(10,2)) RETURNS TABLE
-AS
-    RETURN (
-        SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO
-        WHERE salario > @salary
-    );
-GO
-
--- Test
-SELECT * FROM getEmpregadoBySalary(1200.67)
-
-
-
--- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.SERVICO ----------------------------------
-
-DROP FUNCTION IF EXISTS getServicoByCategory;
-DROP FUNCTION IF EXISTS getServicoByDepId;
-
-
--- Filtrar os serviços por categoria
-GO
-CREATE FUNCTION getServicoByCategory(@serv_cat VARCHAR(50)) RETURNS TABLE
-AS
-    RETURN (
-        SELECT * FROM  EMPRESA_CONSTRUCAO.SERVICO
-        WHERE categoria = @serv_cat
-    );
-GO
-
--- Test
-SELECT * FROM getServicoByCategory('Construção Sustentável');
-
-
--- Filtrar os serviços pelo id do departamento correspondente
-GO
-CREATE FUNCTION  getServicoByDepId(@dep_id INT) RETURNS TABLE
-AS
-    RETURN (
-        SELECT * FROM EMPRESA_CONSTRUCAO.SERVICO
-        WHERE id_departamento = @dep_id
-    );
-GO
-
--- Test
-SELECT * FROM getServicoByDepId(20045);
+SELECT * FROM getEmpregadoBySexBirthSalary('M' , '1955-08-11', 50000)
 
 
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.CLIENTE ----------------------------------
 
 DROP FUNCTION IF EXISTS getClientByName;
+
 
 -- Filtrar empregados pelo primeiro nome e apelido
 GO
@@ -151,13 +77,13 @@ CREATE FUNCTION getClientByName (
 AS
     RETURN (
         SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE
-        WHERE (@client_first_name IS NULL OR nome_proprio = @client_first_name)
-        AND (@client_last_name IS NULL OR apelido = @client_last_name)
+        WHERE (@client_first_name IS NULL OR nome_proprio LIKE @client_first_name + '%')
+        AND (@client_last_name IS NULL OR apelido LIKE @client_last_name + '%')
     );
 GO
 
 -- Test
-SELECT * FROM getClientByName('Katelyn','Solis')
+SELECT * FROM getClientByName('K', 'W')
 
 
 
@@ -256,7 +182,9 @@ GO
 CREATE FUNCTION getObraEmpregadoByObra(@obra_id INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT * FROM EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO
+        SELECT REL_O_E.nif_empregado, REL_O_E.dia, REL_O_E.horas, E.nome_proprio, E.apelido, E.email
+        FROM EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO AS REL_O_E
+        JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON REL_O_E.nif_empregado = E.nif
         WHERE id_obra = @obra_id
     );
 GO
@@ -270,7 +198,9 @@ GO
 CREATE FUNCTION getObraEmpregadoByEmpregado(@empr_nif INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT * FROM EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO
+        SELECT REL_O_E.id_obra, O.localizacao, O.data_inicio, O.data_fim
+        FROM EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO AS REL_O_E
+        JOIN EMPRESA_CONSTRUCAO.OBRA AS O ON REL_O_E.id_obra = O.id
         WHERE nif_empregado = @empr_nif
     );
 GO

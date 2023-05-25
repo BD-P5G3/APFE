@@ -2,15 +2,11 @@ departamento:        <------------------------ done
 - nome
 - id
 
-empregado:            <------------------------ done
+empregado:            <------------------------ done *
 - nome (e apelido, claro)
 - data de nascimento
 - género
 - salário (tipo acima/abaixo de x)
-
-serviço:              <------------------------ done
-- categoria
-- id de departamento
 
 cliente:              <------------------------ done
 - nome (inclui apelido)
@@ -28,12 +24,12 @@ obra-serviço:         <------------------------ done
 - filtrar por serviço
 
 
-obra-empregado:       <------------------------ done
+obra-empregado:       <------------------------ done * Adicionar informações sobre o empregado
 - filtrar por obra
 - por empregado
 
 será necessário fazer um filtro para um determinado dia ou range de dias?
- material de construção:    <------------------------ done
+ material de construção:    <------------------------ done * juntar com unidades
 - categoria
 - nome
 - unidades em armazém
@@ -42,13 +38,14 @@ fornecedor:             <------------------------ done
 - nome
 
 encomenda:
-- data (seja data específica ou range de datas)
+- data (seja data específica ou range de datas) 
 - fornecedor (através do nif)
-- obra (através do id)
+- obra (através do id)  * As encomendas do fornecedor x para a obra y 
 
 encomenda-material:
 - filtrar por encomenda
 - por material
+
 obra-material:
 - filtrar por obra
 - por material

@@ -48,7 +48,7 @@ INSERT INTO EMPRESA_CONSTRUCAO.CEO(nif_empregado)
     VALUES (953832401),
            (878649173);
 
-INSERT INTO EMPRESA_CONSTRUCAO.SERVICO(id, categoria, id_departamento)
+INSERT INTO EMPRESA_CONSTRUCAO.SERVICO(id_S, categoria, id_departamento)
     VALUES (201101, 'Construção Residencial', 20047),
            (201102, 'Construção Comercial', 20044),
            (201103, 'Construção Industrial', 20048),
