@@ -148,9 +148,12 @@ GO
 CREATE FUNCTION getObraServicoByObra(@obra_id INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT * FROM EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO
+        SELECT REL_O_S.id_obra, S.id_S AS id_servico, S.categoria, S.id_departamento, DEP.nome
+        FROM EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO AS REL_O_S
+        JOIN EMPRESA_CONSTRUCAO.SERVICO AS S ON REL_O_S.id_servico = S.id_S
+        JOIN EMPRESA_CONSTRUCAO.DEPARTAMENTO AS DEP ON S.id_departamento = DEP.id
         WHERE id_obra = @obra_id
-    )
+    );
 GO
 
 -- Test
