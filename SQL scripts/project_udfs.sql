@@ -42,9 +42,6 @@ GO
 
 -- Tests
 SELECT * FROM getEmpregadoByName('Jo', NULL)
-SELECT * FROM getEmpregadoByName(NULL, NULL)
-SELECT * FROM getEmpregadoByName(NULL, 'Mir')
-SELECT * FROM getEmpregadoByName('Rúben', 'Gameiro')
 
 
 -- Filtrar os empregados por género/data de nascimento/salário
@@ -89,23 +86,8 @@ SELECT * FROM getClientByName('K', 'W')
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.OBRA ----------------------------------
 
-DROP FUNCTION IF EXISTS getObraByLocation;
 DROP FUNCTION IF EXISTS getObraByClientNif;
 DROP FUNCTION IF EXISTS getObraByDate;
-
-
--- Filtrar as obras por localização
-GO
-CREATE FUNCTION getObraByLocation(@ob_location VARCHAR(200)) RETURNS TABLE
-AS
-    RETURN (
-        SELECT * FROM EMPRESA_CONSTRUCAO.OBRA
-        WHERE localizacao = @ob_location
-    );
-GO
-
--- Test
-SELECT * FROM getObraByLocation ('45102 Monica Mission Apt. 080, Stephaniechester, KS 00774');
 
 
 -- Filtrar as obras por nif do cliente
@@ -165,7 +147,10 @@ GO
 CREATE FUNCTION getObraServicoByServico(@servico_id INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT * FROM EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO
+        SELECT REL_O_S.id_servico, Ob.id AS id_obra, Ob.localizacao, Ob.data_inicio, Ob.data_fim, C.nome_proprio AS client_nome_proprio, C.apelido AS client_apelido
+        FROM EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO AS REL_O_S
+        JOIN EMPRESA_CONSTRUCAO.OBRA AS Ob ON REL_O_S.id_obra = Ob.id
+        JOIN EMPRESA_CONSTRUCAO.CLIENTE AS C ON Ob.nif_cliente = C.nif
         WHERE id_servico = @servico_id
     )
 GO
@@ -185,7 +170,7 @@ GO
 CREATE FUNCTION getObraEmpregadoByObra(@obra_id INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT REL_O_E.nif_empregado, REL_O_E.dia, REL_O_E.horas, E.nome_proprio, E.apelido, E.email
+        SELECT REL_O_E.id_obra, REL_O_E.nif_empregado, REL_O_E.dia, REL_O_E.horas, E.nome_proprio, E.apelido, E.email
         FROM EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO AS REL_O_E
         JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON REL_O_E.nif_empregado = E.nif
         WHERE id_obra = @obra_id
@@ -201,7 +186,7 @@ GO
 CREATE FUNCTION getObraEmpregadoByEmpregado(@empr_nif INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT REL_O_E.id_obra, O.localizacao, O.data_inicio, O.data_fim
+        SELECT REL_O_E.nif_empregado, REL_O_E.id_obra, O.localizacao, O.data_inicio, O.data_fim
         FROM EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO AS REL_O_E
         JOIN EMPRESA_CONSTRUCAO.OBRA AS O ON REL_O_E.id_obra = O.id
         WHERE nif_empregado = @empr_nif
@@ -279,3 +264,57 @@ GO
 
 -- Test
 SELECT * FROM getFornecedorByName('MegaConstrução')
+
+-- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.ENCOMENDA ----------------------------------
+
+DROP FUNCTION IF EXISTS getEncomendByDate;
+DROP FUNCTION IF EXISTS getEncomendaByFornId;
+
+
+-- Filtrar as encomendas por data
+GO
+CREATE FUNCTION getEncomendByDate(@delievery_date DATE) RETURNS TABLE
+AS
+    RETURN (
+        SELECT ENC.data, ENC.nif_fornecedor, F.nome AS nome_fornecedor
+        FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
+        JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS F on F.nif = ENC.nif_fornecedor
+        WHERE data >= @delievery_date
+    );
+GO
+
+-- Test
+SELECT * FROM getEncomendByDate('2023-05-01')
+
+
+-- Filtrar as encomendas por nif do fornecedor
+GO
+CREATE FUNCTION getEncomendaByFornId(@forn_id INT) RETURNS TABLE
+AS
+    RETURN (
+        SELECT ENC.nif_fornecedor, FORN.nome AS nome_fornecedor, FORN.email AS email_fornecedor, FORN.telefone AS telefone_fornecedor, ENC.id AS id_encomenda
+        FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
+        JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS FORN ON ENC.nif_fornecedor = FORN.nif
+        WHERE nif_fornecedor = @forn_id
+    );
+GO
+
+-- Test
+SELECT * FROM getEncomendaByFornId(817439603)
+
+
+-- Filtrar as encomendas por id da obra
+GO
+CREATE FUNCTION getEncomendaByObraId(@obra_id INT) RETURNS TABLE
+AS
+    RETURN (
+        SELECT ENC.id_obra, O.localizacao AS obra_localizacao, O.data_inicio AS obra_data_inicio, O.data_fim AS obra_data_fim,  ENC.nif_fornecedor, F.nome AS nome_fornecedor
+        FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
+        JOIN EMPRESA_CONSTRUCAO.OBRA AS O ON ENC.id_obra = O.id
+        JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS F ON ENC.nif_fornecedor = F.nif
+        WHERE id_obra = @obra_id
+    );
+GO
+
+-- Test
+SELECT * FROM getEncomendaByObraId(19940071)
