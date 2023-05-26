@@ -269,6 +269,7 @@ SELECT * FROM getFornecedorByName('MegaConstrução')
 
 DROP FUNCTION IF EXISTS getEncomendByDate;
 DROP FUNCTION IF EXISTS getEncomendaByFornId;
+DROP FUNCTION IF EXISTS getEncomendaByObraId;
 
 
 -- Filtrar as encomendas por data
@@ -276,9 +277,10 @@ GO
 CREATE FUNCTION getEncomendByDate(@delievery_date DATE) RETURNS TABLE
 AS
     RETURN (
-        SELECT ENC.data, ENC.nif_fornecedor, F.nome AS nome_fornecedor
+        SELECT ENC.data AS data_entrega, ENC.nif_fornecedor, F.nome AS nome_fornecedor, REL_ENC_MAT.custo AS custo_total
         FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
-        JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS F on F.nif = ENC.nif_fornecedor
+        JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS F ON F.nif = ENC.nif_fornecedor
+        JOIN EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL AS REL_ENC_MAT ON ENC.id = REL_ENC_MAT.id_encomenda
         WHERE data >= @delievery_date
     );
 GO
@@ -292,9 +294,10 @@ GO
 CREATE FUNCTION getEncomendaByFornId(@forn_id INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT ENC.nif_fornecedor, FORN.nome AS nome_fornecedor, FORN.email AS email_fornecedor, FORN.telefone AS telefone_fornecedor, ENC.id AS id_encomenda
+        SELECT ENC.nif_fornecedor, FORN.nome AS nome_fornecedor, FORN.email AS email_fornecedor, FORN.telefone AS telefone_fornecedor, ENC.id AS id_encomenda, REL_ENC_MAT.custo AS custo_total
         FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
         JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS FORN ON ENC.nif_fornecedor = FORN.nif
+        JOIN EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL AS REL_ENC_MAT ON ENC.id = REL_ENC_MAT.id_encomenda
         WHERE nif_fornecedor = @forn_id
     );
 GO
@@ -308,10 +311,11 @@ GO
 CREATE FUNCTION getEncomendaByObraId(@obra_id INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT ENC.id_obra, O.localizacao AS obra_localizacao, O.data_inicio AS obra_data_inicio, O.data_fim AS obra_data_fim,  ENC.nif_fornecedor, F.nome AS nome_fornecedor
+        SELECT ENC.id_obra, O.localizacao AS obra_localizacao, O.data_inicio AS obra_data_inicio, O.data_fim AS obra_data_fim,  ENC.nif_fornecedor, F.nome AS nome_fornecedor, REL_ENC_MAT.custo AS custo_total
         FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
         JOIN EMPRESA_CONSTRUCAO.OBRA AS O ON ENC.id_obra = O.id
         JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS F ON ENC.nif_fornecedor = F.nif
+        JOIN EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL AS REL_ENC_MAT ON ENC.id = REL_ENC_MAT.id_encomenda
         WHERE id_obra = @obra_id
     );
 GO
