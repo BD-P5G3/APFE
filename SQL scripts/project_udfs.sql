@@ -27,21 +27,17 @@ DROP FUNCTION IF EXISTS getEmpregadoBySexBirthSalary;
 
 -- Filtrar empregados pelo primeiro nome e apelido
 GO
-CREATE FUNCTION getEmpregadoByName(
-    @emp_first_name VARCHAR(20),
-    @emp_last_name VARCHAR(20)
-) RETURNS TABLE
+CREATE FUNCTION getEmpregadoByName(@emp_name VARCHAR(40)) RETURNS TABLE
 AS
     RETURN (
         SELECT *
         FROM EMPRESA_CONSTRUCAO.EMPREGADO
-        WHERE (@emp_first_name IS NULL OR nome_proprio LIKE @emp_first_name + '%')
-        AND (@emp_last_name IS NULL OR apelido LIKE  @emp_last_name + '%')
+        WHERE (@emp_name IS NULL OR (nome_proprio + ' ' + apelido) LIKE @emp_name + '%')
     );
 GO
 
 -- Tests
-SELECT * FROM getEmpregadoByName('Jo', NULL)
+SELECT * FROM getEmpregadoByName('João Silva')
 
 
 -- Filtrar os empregados por género/data de nascimento/salário
@@ -67,20 +63,16 @@ DROP FUNCTION IF EXISTS getClientByName;
 
 -- Filtrar empregados pelo primeiro nome e apelido
 GO
-CREATE FUNCTION getClientByName (
-    @client_first_name VARCHAR(20),
-    @client_last_name VARCHAR(20)
-) RETURNS TABLE
+CREATE FUNCTION getClientByName (@client_name VARCHAR(40)) RETURNS TABLE
 AS
     RETURN (
         SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE
-        WHERE (@client_first_name IS NULL OR nome_proprio LIKE @client_first_name + '%')
-        AND (@client_last_name IS NULL OR apelido LIKE @client_last_name + '%')
+        WHERE (@client_name IS NULL OR (nome_proprio + ' ' + apelido) LIKE @client_name + '%')
     );
 GO
 
 -- Test
-SELECT * FROM getClientByName('K', 'W')
+SELECT * FROM getClientByName('Katelyn Solis')
 
 
 
