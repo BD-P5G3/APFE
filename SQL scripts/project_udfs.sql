@@ -1,7 +1,5 @@
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.DEPARTAMENTO ----------------------------------
 
-DROP FUNCTION IF EXISTS getDepartamentoById;
-
 -- Filtrar os departamentos por id ao ser dado como argumento um id do departamento
 GO
 CREATE FUNCTION getDepartamentoById (@dep_id INT) RETURNS TABLE
@@ -21,9 +19,6 @@ SELECT * FROM getDepartamentoById(20041)
 
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.EMPREGADO ----------------------------------
-
-DROP FUNCTION IF EXISTS getEmpregadoByName;
-DROP FUNCTION IF EXISTS getEmpregadoBySexBirthSalary;
 
 -- Filtrar empregados pelo primeiro nome e apelido
 GO
@@ -58,9 +53,6 @@ SELECT * FROM getEmpregadoBySexBirthSalary('M' , '1955-08-11', 50000)
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.CLIENTE ----------------------------------
 
-DROP FUNCTION IF EXISTS getClientByName;
-
-
 -- Filtrar empregados pelo primeiro nome e apelido
 GO
 CREATE FUNCTION getClientByName (@client_name VARCHAR(40)) RETURNS TABLE
@@ -77,10 +69,6 @@ SELECT * FROM getClientByName('Katelyn Solis')
 
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.OBRA ----------------------------------
-
-DROP FUNCTION IF EXISTS getObraByClientNif;
-DROP FUNCTION IF EXISTS getObraByDate;
-
 
 -- Filtrar as obras por nif do cliente
 GO
@@ -113,9 +101,6 @@ SELECT * FROM getObraByDate('2023-05-10', '2023-05-28')
 
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO ----------------------------------
-
-DROP FUNCTION IF EXISTS getObraServicoByObra;
-DROP FUNCTION IF EXISTS getObraServicoByServico;
 
 -- Filtrar as obras e serviços por id da obra
 GO
@@ -154,9 +139,6 @@ SELECT * FROM getObraServicoByServico(201111)
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO ----------------------------------
 
-DROP FUNCTION IF EXISTS getObraEmpregadoByObra;
-DROP FUNCTION IF EXISTS getObraEmpregadoByEmpregado;
-
 -- Filtrar as obras e empregados por id de obra
 GO
 CREATE FUNCTION getObraEmpregadoByObra(@obra_id INT) RETURNS TABLE
@@ -191,10 +173,6 @@ SELECT * FROM getObraEmpregadoByEmpregado(567890321)
 
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO ----------------------------------
-
-DROP FUNCTION IF EXISTS getMaterialByCategory;
-DROP FUNCTION IF EXISTS getMaterialByName;
-DROP FUNCTION IF EXISTS getMaterialByQuantity;
 
 -- Filtrar os materiais de construção por categoria
 GO
@@ -241,8 +219,6 @@ SELECT * FROM getMaterialByQuantity(400)
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.FORNECEDOR ----------------------------------
 
-DROP FUNCTION IF EXISTS getFornecedorByName;
-
 
 -- Filtrar os fornecedores por nome
 GO
@@ -258,11 +234,6 @@ GO
 SELECT * FROM getFornecedorByName('MegaConstrução')
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.ENCOMENDA ----------------------------------
-
-DROP FUNCTION IF EXISTS getEncomendByDate;
-DROP FUNCTION IF EXISTS getEncomendaByFornId;
-DROP FUNCTION IF EXISTS getEncomendaByObraId;
-
 
 -- Filtrar as encomendas por data
 GO
