@@ -55,9 +55,17 @@ DROP PROCEDURE IF EXISTS create_client;
 DROP PROCEDURE IF EXISTS add_constr_material;
 DROP PROCEDURE IF EXISTS create_fornecedor;
 DROP PROCEDURE IF EXISTS add_encomenda;
+DROP PROCEDURE IF EXISTS add_material_enc;
+DROP PROCEDURE IF EXISTS add_empregado_obra;
 
 DROP PROCEDURE IF EXISTS update_department;
 DROP PROCEDURE IF EXISTS update_employee;
 DROP PROCEDURE IF EXISTS update_client;
 DROP PROCEDURE IF EXISTS update_obra;
 DROP PROCEDURE IF EXISTS update_fornecedor;
+
+DROP PROCEDURE IF EXISTS delete_department;
+DROP PROCEDURE IF EXISTS delete_employee;
+DROP PROCEDURE IF EXISTS delete_obra;
+DROP PROCEDURE IF EXISTS delete_client;
+DROP PROCEDURE IF EXISTS delete_fornecedor;

@@ -21,7 +21,6 @@ SELECT * FROM EMPRESA_CONSTRUCAO.SERVICO
 EXEC create_department 200411, 'Departamento de Redes'
 
 
-
 -- Adicionar um empregado novo
 GO
 CREATE PROCEDURE add_employee(@nif INT, @first_name VARCHAR(25), @last_name VARCHAR(25), @email VARCHAR(50), @phone_number INT,
@@ -46,7 +45,6 @@ SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO
 
 -- Test
 EXEC add_employee 818364927, 'Rui', 'Abacate', 'rui.abacate@ua.pt', 928466013, 'Rua Fátima de Albergaria', NULL, NULL, 1275.38, 20041
-
 
 
 -- Criar uma obra nova
@@ -74,7 +72,6 @@ SELECT * FROM EMPRESA_CONSTRUCAO.OBRA
 EXEC create_obra 19940091, 'Rua São Miguel Açores, BAA', '2023-01-01', '2023-01-22', 287944069
 
 
-
 -- Criar um cliente novo
 GO
 CREATE PROCEDURE create_client(@nif_client INT, @first_name VARCHAR(25), @last_name VARCHAR(25), @email VARCHAR(100), @phone_number INT, @address VARCHAR(200))
@@ -96,7 +93,6 @@ SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE
 
 -- Test
 EXEC create_client 123741849, 'Maria', 'Beatriz', 'maria.beatriz@ua.pt', 234712984, 'Rua Desportiva de Alvas, ABC'
-
 
 
 -- Adicionar um novo material de construção
@@ -142,7 +138,6 @@ END
 EXEC create_fornecedor 491723946, 'Construção Domingues', 295814065, 'domingues.constr@ua.pt', 'Rua da Padaria 2039, ACHS'
 
 
-
 -- Adiconar uma nova encomenda
 GO
 CREATE PROCEDURE add_encomenda(@id_enc INT, @data_enc DATE, @forn_nif INT, @obra_id INT)
@@ -166,6 +161,54 @@ GO
 
 -- Test
 EXEC add_encomenda 1991021 ,'2023-05-03', 965781420, 19940051
+
+
+-- Adicionar um empregado a uma obra
+GO
+CREATE PROCEDURE add_empregado_obra(@id_obra INT, @nif_empr INT, @work_day DATE, @work_hours TIME)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+            INSERT INTO EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO(id_obra, nif_empregado, dia, horas)
+                VALUES (@id_obra, @nif_empr, @work_day, @work_hours)
+        COMMIT
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+        ROLLBACK
+    END CATCH
+END
+GO
+
+-- Test
+EXEC add_empregado_obra 19940012, 461092846, '2023-03-10', '05:48:12'
+
+
+-- Adicionar um material de construção a uma encomenda
+GO
+CREATE PROCEDURE add_material_enc(@id_enc INT, @id_mat INT, @total_cost DECIMAL(10,2))
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+            INSERT INTO EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL(id_encomenda, id_material, custo)
+                VALUES (@id_enc, @id_mat, @total_cost)
+            PRINT 'Added material to the encomenda with success'
+        COMMIT
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+        ROLLBACK
+    END CATCH
+END
+GO
+
+-- Test
+EXEC add_material_enc 1991020, 1997010, 478.30
+
 
 
 
@@ -207,8 +250,6 @@ SELECT * FROM EMPRESA_CONSTRUCAO.DEPARTAMENTO
 
 -- Test
 EXEC update_department 200411, 'Departamento de Segurança'
-
-
 
 
 -- Alterar os dados de um empregado
@@ -321,7 +362,6 @@ SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO;
 EXEC update_employee 858170528, 'Dário', 'Gaspar', 'dario.gaspar@ua.pt', 901738012, 'Rua 999 Porto Mós', 'M', '1936-03-28', '1934.40'
 
 
-
 -- Alterar os dados de um cliente
 GO
 CREATE PROCEDURE update_client(
@@ -399,7 +439,6 @@ SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE;
 EXEC update_client 991972284, 'Jessica', 'Carlson', 'jessica.carlson@ua.pt', 853042464, '753 Jackson River, Nicholasborough, DC 49673'
 
 
-
 -- Alterar os dados de uma obra
 GO
 CREATE PROCEDURE update_obra(@id_obra INT, @location_obra VARCHAR(200), @begin_date_obra DATE, @end_date_obra DATE)
@@ -456,3 +495,206 @@ GO
 
 -- Test
 EXEC update_obra 19940090, '347 Dunn Island, Daughertyshire, OH 57189', '2023-05-11', '2023-06-07'
+
+
+-- Alterar os dados de um fornecedor
+CREATE PROCEDURE update_fornecedor(@nif_fornecedor INT, @name_fornecedor VARCHAR(50), @phone_number_fornecedor INT, @email_fornecedor VARCHAR(100), @address_fornecedor VARCHAR(200))
+AS
+BEGIN
+    BEGIN TRY
+        DECLARE @nif_forn_old AS INT;
+        DECLARE @name_forn_old AS VARCHAR(50);
+        DECLARE @phone_number_forn_old AS INT;
+        DECLARE @email_forn_old AS VARCHAR(100);
+        DECLARE @address_forn_old AS VARCHAR(200);
+
+        SELECT
+            @nif_forn_old = FORN.nif,
+            @name_forn_old = FORN.nome,
+            @phone_number_forn_old = FORN.telefone,
+            @email_forn_old = FORN.email,
+            @address_forn_old = FORN.morada
+        FROM EMPRESA_CONSTRUCAO.FORNECEDOR AS FORN
+        WHERE nif = @nif_fornecedor OR nome = @name_fornecedor OR telefone = @phone_number_fornecedor OR email = @email_fornecedor OR morada = @address_fornecedor
+
+        IF @nif_forn_old != @nif_fornecedor
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.FORNECEDOR SET nif = @nif_fornecedor WHERE nif = @nif_forn_old
+                PRINT 'Updated nif from fornecedor with success'
+            END
+
+        IF @name_forn_old != @name_fornecedor
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.FORNECEDOR SET nome = @name_fornecedor WHERE nif = @nif_forn_old
+                PRINT 'Updated name from fornecedor with success'
+            END
+
+        IF @phone_number_forn_old != @phone_number_fornecedor
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.FORNECEDOR SET telefone = @phone_number_fornecedor WHERE nif = @nif_forn_old
+                PRINT 'Updated phone number from fornecedor with success'
+            END
+
+        IF @email_forn_old != @email_fornecedor
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.FORNECEDOR SET email = @email_fornecedor WHERE nif = @nif_forn_old
+                PRINT 'Updated email from fornecedor with success'
+            END
+
+        IF @address_forn_old != @address_fornecedor
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.FORNECEDOR SET morada = @address_fornecedor WHERE nif = @nif_forn_old
+                PRINT 'Updated address from fornecedor with success'
+            END
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+    END CATCH
+END
+SELECT * FROM EMPRESA_CONSTRUCAO.FORNECEDOR
+GO
+
+-- Test
+EXEC update_fornecedor 491723945,'Construção Domingos', 295814066, 'domingos.constr@ua.pt', 'Rua da Pradaria 2039, ACHS'
+
+
+
+
+-- Eliminar um departamento
+GO
+CREATE PROCEDURE delete_department(@id_dep INT)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+            DELETE FROM EMPRESA_CONSTRUCAO.DEPARTAMENTO WHERE id = @id_dep
+            PRINT 'Deleted department with success'
+        COMMIT
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+        ROLLBACK
+    END CATCH
+END
+GO
+
+-- Test
+SELECT * FROM EMPRESA_CONSTRUCAO.DEPARTAMENTO
+EXEC delete_department 200411
+
+
+-- Eliminar um empregado
+GO
+CREATE PROCEDURE delete_employee(@employee_nif INT)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+            DELETE FROM EMPRESA_CONSTRUCAO.EMPREGADO WHERE nif = @employee_nif
+            PRINT 'Deleted empregado with success'
+        COMMIT
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+        ROLLBACK
+    END CATCH
+END
+
+-- Test
+SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO
+EXEC delete_employee 624521804
+
+
+-- Eliminar uma obra
+GO
+CREATE PROCEDURE delete_obra(@id_obra INT)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+            DELETE FROM EMPRESA_CONSTRUCAO.OBRA WHERE id = @id_obra
+            PRINT 'Deleted obra with success'
+        COMMIT
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+        ROLLBACK
+    END CATCH
+END
+GO
+
+-- Test
+SELECT * FROM EMPRESA_CONSTRUCAO.OBRA
+EXEC delete_obra 19940021
+
+
+-- Eliminar um cliente
+GO
+CREATE PROCEDURE delete_client(@nif_client INT)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+            DELETE FROM EMPRESA_CONSTRUCAO.CLIENTE WHERE nif = @nif_client
+            PRINT 'Deleted client with success'
+        COMMIT
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+        ROLLBACK
+    END CATCH
+END
+GO
+
+-- Test
+SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE
+EXEC delete_client 245475150
+
+
+-- Eliminar um fornecedor
+GO
+CREATE PROCEDURE delete_fornecedor(@nif_fornecedor INT)
+AS
+BEGIN
+    BEGIN TRY
+        DELETE FROM EMPRESA_CONSTRUCAO.FORNECEDOR WHERE nif = @nif_fornecedor
+        PRINT 'Deleted fornecedor with success'
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+    END CATCH
+END
+GO
+
+-- Test
+SELECT * FROM EMPRESA_CONSTRUCAO.FORNECEDOR
+EXEC delete_fornecedor 491723945
+
+
+-- Eliminar um material de uma encomenda
+GO
+CREATE PROCEDURE delete_material_enc(@id_material INT)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+            DELETE FROM EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL WHERE id_material = @id_material
+            PRINT 'Removed material from encomenda with success'
+        COMMIT
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+        ROLLBACK
+    END CATCH
+END
+GO
+
+-- Test
+SELECT * FROM EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL

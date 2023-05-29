@@ -127,7 +127,7 @@ INSERT INTO EMPRESA_CONSTRUCAO.CLIENTE(nif, nome_proprio, apelido, email, telefo
             (462815779, 'Stacie', 'Arnold', 'amanda52@example.com', 168403761, '952 Charles Isle, South Ryanmouth, OR 70982'),
             (331559633, 'Crystal', 'Young', 'kirwin@example.net', 206068943, '385 Peters Bypass, Carolynmouth, NC 84433'),
             (671561996, 'Daniel', 'Romero', 'michelletran@example.org', 644747620, '90582 Valentine View Suite 066, Allisonport, PR 46996');
-            
+
 
 INSERT INTO EMPRESA_CONSTRUCAO.OBRA(ID, LOCALIZACAO, DATA_INICIO, DATA_FIM, NIF_CLIENTE)
     VALUES  (19940001, '599 Alexander Terrace, Lake Philip, RI 21420', '2023-03-27', '2023-04-16', 911847104),
@@ -619,4 +619,3 @@ INSERT INTO EMPRESA_CONSTRUCAO.REL_OBRA_ENCOMENDA(id_obra, id_encomenda)
             (19940040, 1991019),
             (19940060, 1991019),
             (19940055, 1991011);
-
