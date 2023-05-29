@@ -69,3 +69,7 @@ DROP PROCEDURE IF EXISTS delete_employee;
 DROP PROCEDURE IF EXISTS delete_obra;
 DROP PROCEDURE IF EXISTS delete_client;
 DROP PROCEDURE IF EXISTS delete_fornecedor;
+
+
+-- Drop trigger's
+DROP TRIGGER IF EXISTS work_day_check;

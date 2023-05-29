@@ -498,6 +498,7 @@ EXEC update_obra 19940090, '347 Dunn Island, Daughertyshire, OH 57189', '2023-05
 
 
 -- Alterar os dados de um fornecedor
+GO
 CREATE PROCEDURE update_fornecedor(@nif_fornecedor INT, @name_fornecedor VARCHAR(50), @phone_number_fornecedor INT, @email_fornecedor VARCHAR(100), @address_fornecedor VARCHAR(200))
 AS
 BEGIN
