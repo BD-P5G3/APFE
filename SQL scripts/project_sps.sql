@@ -44,7 +44,8 @@ GO
 SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO
 
 -- Test
-EXEC add_employee 818364927, 'Rui', 'Abacate', 'rui.abacate@ua.pt', 928466013, 'Rua Fátima de Albergaria', NULL, NULL, 1275.38, 20041
+EXEC add_employee 101010101, 'T', 't', 't@t.pt', 910000000, 'teste', 'O', '1970-01-01', 750.43, 20041
+
 
 
 -- Criar uma obra nova
@@ -115,7 +116,6 @@ END
 
 -- Test
 EXEC add_constr_material '1997016', 'Fundações e estruturas', 'Tijolos', 640
-
 
 -- Adicionar um fornecedor novo
 GO
@@ -560,6 +560,59 @@ GO
 EXEC update_fornecedor 491723945,'Construção Domingos', 295814066, 'domingos.constr@ua.pt', 'Rua da Pradaria 2039, ACHS'
 
 
+-- Alterar os dados de um material de construção
+GO
+CREATE PROCEDURE update_mat_constr(@id_mat INT, @category_mat VARCHAR(100), @name_mat VARCHAR(50), @quantity INT)
+AS
+BEGIN
+    BEGIN TRY
+        DECLARE @id_mat_old AS INT;
+        DECLARE @category_mat_old AS VARCHAR(100);
+        DECLARE @name_mat_old AS VARCHAR(50);
+        DECLARE @quantity_old AS INT;
+
+        SELECT
+            @id_mat_old = MAT.id,
+            @category_mat_old = MAT.categoria,
+            @name_mat_old = MAT.nome,
+            @quantity_old = MAT.unidades_armazem
+        FROM EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO AS MAT
+        WHERE @id_mat = id OR @name_mat = nome
+
+        IF  @id_mat_old != @id_mat
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO SET id = @id_mat WHERE id = @id_mat_old
+                PRINT 'Updated material id with success'
+            END
+
+        IF  @category_mat_old != @category_mat
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO SET categoria = @category_mat WHERE id = @id_mat_old
+                PRINT 'Updated material category with success'
+            END
+
+        IF  @name_mat_old != @name_mat
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO SET nome = @name_mat WHERE id = @id_mat_old
+                PRINT 'Updated material name with success'
+            END
+
+        IF  @quantity_old != @quantity
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO SET unidades_armazem = @quantity WHERE id = @id_mat_old
+                PRINT 'Updated material storage units with success'
+            END
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+    END CATCH
+END
+GO
+
+-- Test
+EXEC update_mat_constr 1997017, 'Equipamentos de Proteção','Luvas', 1250
+
 
 
 -- Eliminar um departamento
@@ -699,3 +752,23 @@ GO
 
 -- Test
 SELECT * FROM EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL
+
+
+-- Apagar um material de construção
+GO
+CREATE PROCEDURE delete_mat_constr(@id_mat INT)
+AS
+BEGIN
+    BEGIN TRY
+        DELETE FROM EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO WHERE id = @id_mat
+        PRINT 'Deleted material from materiais de construção with success'
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+    END CATCH
+END
+GO
+
+-- Test
+EXEC delete_mat_constr 1997017

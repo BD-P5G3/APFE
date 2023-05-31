@@ -63,6 +63,7 @@ DROP PROCEDURE IF EXISTS update_employee;
 DROP PROCEDURE IF EXISTS update_client;
 DROP PROCEDURE IF EXISTS update_obra;
 DROP PROCEDURE IF EXISTS update_fornecedor;
+DROP PROCEDURE IF EXISTS update_mat_constr
 
 DROP PROCEDURE IF EXISTS delete_department;
 DROP PROCEDURE IF EXISTS delete_employee;
@@ -73,3 +74,4 @@ DROP PROCEDURE IF EXISTS delete_fornecedor;
 
 -- Drop trigger's
 DROP TRIGGER IF EXISTS work_day_check;
+DROP TRIGGER IF EXISTS salary_check;

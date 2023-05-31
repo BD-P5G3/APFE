@@ -5,7 +5,9 @@ GO
 CREATE FUNCTION getDepartamentoById (@dep_id INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT DEP.nome AS Departamento_nome, E.nome_proprio AS Emp_nome_proprio, E.apelido AS Emp_apelido, E.email AS Emp_email, S.id_S AS Serv_id, S.categoria AS SER_categoria
+        SELECT DEP.nome AS Departamento_nome,
+               E.nome_proprio AS Emp_nome_proprio, E.apelido AS Emp_apelido, E.email AS Emp_email,
+               S.id_S AS Serv_id, S.categoria AS Serv_categoria
         FROM EMPRESA_CONSTRUCAO.DEPARTAMENTO AS DEP
         JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON DEP.id = E.id_departamento
         JOIN EMPRESA_CONSTRUCAO.SERVICO AS S ON E.id_departamento = S.id_departamento
@@ -53,7 +55,7 @@ SELECT * FROM getEmpregadoBySexBirthSalary('M' , '1955-08-11', 50000)
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.CLIENTE ----------------------------------
 
--- Filtrar empregados pelo primeiro nome e apelido
+-- Filtrar clientes pelo primeiro nome e apelido
 GO
 CREATE FUNCTION getClientByName (@client_name VARCHAR(40)) RETURNS TABLE
 AS
