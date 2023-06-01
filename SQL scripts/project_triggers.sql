@@ -36,7 +36,7 @@ EXEC add_empregado_obra 19940020, 461092846, '2023-05-01', '05:34:39'
 -- O salário de um empregado deve de ser sempre maior ou igual ao salário minimo português (740.83) e não pode ser maior do que os salários dos CEO's
 GO
 CREATE TRIGGER salary_check ON EMPRESA_CONSTRUCAO.EMPREGADO
-INSTEAD OF INSERT
+AFTER INSERT
 AS
 BEGIN
     DECLARE @salary_in AS DECIMAL(10,2);
@@ -63,5 +63,4 @@ GO
 
 -- Test
 EXEC add_employee 564833845, 'Luís', 'Sebastião', 'luis.seb@ua.pt', 475924749, 'Rua de Espanha, KRAL', 'M', '1946-03-13', 60000.00, 20041
-
-
+EXEC  update_employee 564833845, 'Luís', 'Sebastião', 'luis.seb@ua.pt', 475924749, 'Rua de Espanha, KRAL', 'M', '1946-03-13', 60000.00
