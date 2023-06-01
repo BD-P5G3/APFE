@@ -33,19 +33,24 @@ GO
 EXEC add_empregado_obra 19940020, 461092846, '2023-05-01', '05:34:39'
 
 
--- O salário de um empregado deve de ser sempre maior ou igual ao salário minimo português (740.83)
+-- O salário de um empregado deve de ser sempre maior ou igual ao salário minimo português (740.83) e não pode ser maior do que os salários dos CEO's
 GO
 CREATE TRIGGER salary_check ON EMPRESA_CONSTRUCAO.EMPREGADO
 INSTEAD OF INSERT
 AS
 BEGIN
     DECLARE @salary_in AS DECIMAL(10,2);
-    DECLARE @empr_nig AS INT;
+    DECLARE @empr_nif AS INT;
+    DECLARE @ceo_avg_salary AS DECIMAL(10,2)
 
-    SELECT @salary_in = inserted.salario, @empr_nig = inserted.nif FROM inserted;
+    SELECT @ceo_avg_salary = AVG(E.salario)
+    FROM EMPRESA_CONSTRUCAO.CEO AS CEO
+    JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON E.nif = CEO.nif_empregado
+
+    SELECT @salary_in = inserted.salario, @empr_nif = inserted.nif FROM inserted;
 
     BEGIN
-        IF @salary_in < 740.83
+        IF (@salary_in < 740.83 OR @salary_in > @ceo_avg_salary)
             BEGIN
                 RAISERROR('ERROR: Employee salary must be equal or greater to 740.83', 16, 1);
                 RETURN;
@@ -57,4 +62,6 @@ END
 GO
 
 -- Test
-EXEC add_employee 564833845, 'Luís', 'Sebastião', 'luis.seb@ua.pt', 475924749, 'Rua de Espanha, KRAL', 'M', '1946-03-13', 456.34, 20041
+EXEC add_employee 564833845, 'Luís', 'Sebastião', 'luis.seb@ua.pt', 475924749, 'Rua de Espanha, KRAL', 'M', '1946-03-13', 60000.00, 20041
+
+

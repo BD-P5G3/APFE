@@ -242,7 +242,9 @@ GO
 CREATE FUNCTION getEncomendByDate(@delievery_date DATE) RETURNS TABLE
 AS
     RETURN (
-        SELECT ENC.data AS data_entrega, ENC.nif_fornecedor, F.nome AS nome_fornecedor, REL_ENC_MAT.custo AS custo_total
+        SELECT ENC.data AS data_entrega, ENC.nif_fornecedor,
+               F.nome AS nome_fornecedor,
+               REL_ENC_MAT.custo AS custo_total
         FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
         JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS F ON F.nif = ENC.nif_fornecedor
         JOIN EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL AS REL_ENC_MAT ON ENC.id = REL_ENC_MAT.id_encomenda

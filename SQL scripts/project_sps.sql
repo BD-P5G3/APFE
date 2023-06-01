@@ -437,6 +437,7 @@ SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE;
 
 -- Test
 EXEC update_client 991972284, 'Jessica', 'Carlson', 'jessica.carlson@ua.pt', 853042464, '753 Jackson River, Nicholasborough, DC 49673'
+EXEC update_client 105109164, 'Kelsey', 'Rogers', 'jamesjacob@example.net', 499934325, '2218 Chapman Dam Apt. 548, East Lisa, ND 05133'
 
 
 -- Alterar os dados de uma obra
@@ -771,4 +772,4 @@ END
 GO
 
 -- Test
-EXEC delete_mat_constr 1997017
+EXEC delete_mat_constr _1997017
