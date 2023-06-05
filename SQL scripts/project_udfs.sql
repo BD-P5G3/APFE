@@ -173,6 +173,58 @@ GO
 SELECT * FROM getObraEmpregadoByEmpregado(567890321)
 
 
+-- Retornar o número total de horas de trabalho de um empregado
+GO
+CREATE FUNCTION getTotalHoursByEmpregado(@empr_nif INT) RETURNS TABLE
+AS
+    RETURN (
+        SELECT
+          REL_O_E.nif_empregado,
+          E.nome_proprio + ' ' + E.apelido AS nome_empr,
+          CONCAT(
+            SUM(DATEPART(HOUR, REL_O_E.horas)),
+            'h'
+          ) AS total_horas
+        FROM
+          EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO AS REL_O_E
+          JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON REL_O_E.nif_empregado = E.nif
+        WHERE
+          nif_empregado = @empr_nif
+        GROUP BY
+          REL_O_E.nif_empregado,
+          E.nome_proprio + ' ' + E.apelido
+    );
+GO
+
+-- Test
+SELECT * FROM getTotalHoursByEmpregado(280932739)
+
+
+-- Retornar o número total de horas de todos os empregados
+GO
+CREATE FUNCTION getTotalHoursAllEmployees() RETURNS TABLE
+AS
+    RETURN (
+        SELECT
+          REL_O_E.nif_empregado,
+          E.nome_proprio + ' ' + E.apelido AS nome_empr,
+          CONCAT(
+            SUM(DATEPART(HOUR, REL_O_E.horas)),
+            'h'
+          ) AS total_horas
+        FROM
+          EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO AS REL_O_E
+          JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON REL_O_E.nif_empregado = E.nif
+        GROUP BY
+          REL_O_E.nif_empregado,
+          E.nome_proprio + ' ' + E.apelido
+    );
+GO
+
+-- Test
+SELECT * FROM getTotalHoursAllEmployees()
+
+
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO ----------------------------------
 
@@ -216,6 +268,22 @@ GO
 
 -- Test
 SELECT * FROM getMaterialByQuantity(400)
+
+
+-- Retornar os materiais usados numa obra
+GO
+CREATE FUNCTION getMateriaisByObra(@id_obra INT) RETURNS TABLE
+AS
+    RETURN (
+        SELECT REL_O_MAT.id_obra, REL_O_MAT.id_material, MC.nome AS nome_material, MC.categoria AS categoria_material
+        FROM EMPRESA_CONSTRUCAO.REL_OBRA_MATERIAL AS REL_O_MAT
+        JOIN EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO AS MC ON MC.id = REL_O_MAT.id_material
+        WHERE id_obra = @id_obra
+    );
+GO
+
+-- Test
+SELECT * FROM getMateriaisByObra(19940089)
 
 
 
@@ -278,7 +346,16 @@ GO
 CREATE FUNCTION getEncomendaByObraId(@obra_id INT) RETURNS TABLE
 AS
     RETURN (
-        SELECT ENC.id_obra, O.localizacao AS obra_localizacao, O.data_inicio AS obra_data_inicio, O.data_fim AS obra_data_fim,  ENC.nif_fornecedor, F.nome AS nome_fornecedor, REL_ENC_MAT.custo AS custo_total
+        SELECT
+            ENC.id_obra,
+            O.localizacao AS obra_localizacao,
+            O.data_inicio AS obra_data_inicio,
+            O.data_fim AS obra_data_fim,
+            ENC.nif_fornecedor,
+            ENC.id AS encomenda_id,
+            ENC.data AS encomenda_data,
+            F.nome AS nome_fornecedor,
+            REL_ENC_MAT.custo AS custo_total
         FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
         JOIN EMPRESA_CONSTRUCAO.OBRA AS O ON ENC.id_obra = O.id
         JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS F ON ENC.nif_fornecedor = F.nif

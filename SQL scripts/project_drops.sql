@@ -35,16 +35,20 @@ DROP FUNCTION IF EXISTS getObraServicoByServico;
 
 DROP FUNCTION IF EXISTS getObraEmpregadoByObra;
 DROP FUNCTION IF EXISTS getObraEmpregadoByEmpregado;
+DROP FUNCTION IF EXISTS getTotalHoursByEmpregado;
+DROP FUNCTION IF EXISTS getTotalHoursAllEmployees;
 
 DROP FUNCTION IF EXISTS getMaterialByCategory;
 DROP FUNCTION IF EXISTS getMaterialByName;
 DROP FUNCTION IF EXISTS getMaterialByQuantity;
+DROP FUNCTION IF EXISTS getMateriaisByObra;
 
 DROP FUNCTION IF EXISTS getFornecedorByName;
 
 DROP FUNCTION IF EXISTS getEncomendByDate;
 DROP FUNCTION IF EXISTS getEncomendaByFornId;
 DROP FUNCTION IF EXISTS getEncomendaByObraId;
+
 
 
 -- Drop Store Procedure's
@@ -57,6 +61,7 @@ DROP PROCEDURE IF EXISTS create_fornecedor;
 DROP PROCEDURE IF EXISTS add_encomenda;
 DROP PROCEDURE IF EXISTS add_material_enc;
 DROP PROCEDURE IF EXISTS add_empregado_obra;
+DROP PROCEDURE IF EXISTS add_service_obra;
 
 DROP PROCEDURE IF EXISTS update_department;
 DROP PROCEDURE IF EXISTS update_employee;
@@ -70,6 +75,7 @@ DROP PROCEDURE IF EXISTS delete_employee;
 DROP PROCEDURE IF EXISTS delete_obra;
 DROP PROCEDURE IF EXISTS delete_client;
 DROP PROCEDURE IF EXISTS delete_fornecedor;
+
 
 
 -- Drop trigger's

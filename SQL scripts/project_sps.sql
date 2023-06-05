@@ -183,7 +183,7 @@ END
 GO
 
 -- Test
-EXEC add_empregado_obra 19940012, 461092846, '2023-03-10', '05:48:12'
+EXEC add_empregado_obra 19940001, 280932739, '2023-04-15', '05:48:12'
 
 
 -- Adicionar um material de construção a uma encomenda
@@ -209,6 +209,29 @@ GO
 -- Test
 EXEC add_material_enc 1991020, 1997010, 478.30
 
+
+-- Adicionar um serviço a uma obra
+GO
+CREATE PROCEDURE add_service_obra(@id_obra INT, @id_servico INT)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+            INSERT INTO EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO(id_obra, id_servico)
+                VALUES (@id_obra, @id_servico)
+            PRINT 'Added serviço to obra with success'
+        COMMIT
+    END TRY
+
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE()
+        ROLLBACK
+    END CATCH
+END
+GO
+
+-- Test
+EXEC add_service_obra 19940001, 201101
 
 
 
