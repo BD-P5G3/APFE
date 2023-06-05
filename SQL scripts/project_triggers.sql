@@ -36,7 +36,7 @@ EXEC add_empregado_obra 19940020, 461092846, '2023-05-01', '05:34:39'
 -- O salário de um empregado deve de ser sempre maior ou igual ao salário minimo português (740.83) e não pode ser maior do que os salários dos CEO's
 GO
 CREATE TRIGGER salary_check ON EMPRESA_CONSTRUCAO.EMPREGADO
-AFTER INSERT
+AFTER INSERT, UPDATE
 AS
 BEGIN
     DECLARE @salary_in AS DECIMAL(10,2);
@@ -50,9 +50,16 @@ BEGIN
     SELECT @salary_in = inserted.salario, @empr_nif = inserted.nif FROM inserted;
 
     BEGIN
-        IF (@salary_in < 740.83 OR @salary_in > @ceo_avg_salary)
+        IF (@salary_in < 740.83)
             BEGIN
                 RAISERROR('ERROR: Employee salary must be equal or greater to 740.83', 16, 1);
+                ROLLBACK
+                RETURN;
+            END
+        ELSE IF (@salary_in >= @ceo_avg_salary)
+            BEGIN
+                RAISERROR('ERROR: Employee salary cannot be bigger or equal to the CEOs average salary', 16, 1);
+                ROLLBACK
                 RETURN;
             END
     END
@@ -63,4 +70,9 @@ GO
 
 -- Test
 EXEC add_employee 564833845, 'Luís', 'Sebastião', 'luis.seb@ua.pt', 475924749, 'Rua de Espanha, KRAL', 'M', '1946-03-13', 60000.00, 20041
-EXEC  update_employee 564833845, 'Luís', 'Sebastião', 'luis.seb@ua.pt', 475924749, 'Rua de Espanha, KRAL', 'M', '1946-03-13', 60000.00
+EXEC update_employee 564833845, 'Luís', 'Sebastião', 'luis.seb@ua.pt', 475924749, 'Rua de Espanha, KRAL', 'M', '1946-03-13', 60000.00
+EXEC delete_employee 564833845
+
+
+
+
