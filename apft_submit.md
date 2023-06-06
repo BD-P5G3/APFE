@@ -133,6 +133,7 @@ Nesta imagem é possível visualizar os detalhes de um empregado. O nosso grupo 
 
 <br />
 
+### Funções utilizadas nesta página
 ```sql
 -- Alterar os dados de um empregado
 GO
