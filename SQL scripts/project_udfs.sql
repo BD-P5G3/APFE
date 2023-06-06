@@ -364,3 +364,23 @@ GO
 
 -- Test
 SELECT * FROM getEncomendaByObraId(19940071)
+
+
+-- index fragmentation and rows
+GO
+CREATE FUNCTION getTablesInfo() RETURNS TABLE
+AS
+    RETURN (
+        SELECT t.name AS table_name,
+               ROUND(avg_fragmentation_in_percent,2) AS fragmentation,
+               record_count AS rows_count
+        FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, 'SAMPLED') AS ips
+        INNER JOIN sys.tables t on t.object_id = ips.object_id
+        INNER JOIN sys.schemas s on t.schema_id = s.schema_id
+        INNER JOIN sys.indexes i ON (ips.object_id = i.object_id) AND (ips.index_id = i.index_id)
+        WHERE s.name = 'EMPRESA_CONSTRUCAO'
+    );
+GO
+
+-- Test
+SELECT * FROM getTablesInfo()
