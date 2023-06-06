@@ -180,11 +180,9 @@ AS
     RETURN (
         SELECT
           REL_O_E.nif_empregado,
-          E.nome_proprio + ' ' + E.apelido AS nome_empr,
-          CONCAT(
-            SUM(DATEPART(HOUR, REL_O_E.horas)),
-            'h'
-          ) AS total_horas
+          E.nome_proprio,
+          E.apelido,
+          SUM(DATEPART(HOUR, REL_O_E.horas)) AS total_horas
         FROM
           EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO AS REL_O_E
           JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON REL_O_E.nif_empregado = E.nif
@@ -207,11 +205,9 @@ AS
     RETURN (
         SELECT
           REL_O_E.nif_empregado,
-          E.nome_proprio + ' ' + E.apelido AS nome_empr,
-          CONCAT(
-            SUM(DATEPART(HOUR, REL_O_E.horas)),
-            'h'
-          ) AS total_horas
+          E.nome_proprio,
+          E.apelido,
+          SUM(DATEPART(HOUR, REL_O_E.horas)) AS total_horas
         FROM
           EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO AS REL_O_E
           JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON REL_O_E.nif_empregado = E.nif
