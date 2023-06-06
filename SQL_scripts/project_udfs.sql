@@ -1,4 +1,3 @@
--- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.DEPARTAMENTO ----------------------------------
 
 -- Filtrar os departamentos por id ao ser dado como argumento um id do departamento
 GO
@@ -15,12 +14,10 @@ AS
     )
 GO
 
--- Test
+-- Teste
 SELECT * FROM getDepartamentoById(20041)
 
 
-
--- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.EMPREGADO ----------------------------------
 
 -- Filtrar empregados pelo primeiro nome e apelido
 GO
@@ -33,7 +30,7 @@ AS
     );
 GO
 
--- Tests
+-- Teste
 SELECT * FROM getEmpregadoByName('João Silva')
 
 
@@ -49,11 +46,10 @@ AS
     )
 GO
 
+-- Teste
 SELECT * FROM getEmpregadoBySexBirthSalary('M' , '1955-08-11', 50000)
 
 
-
--- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.CLIENTE ----------------------------------
 
 -- Filtrar clientes pelo primeiro nome e apelido
 GO
@@ -65,12 +61,10 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getClientByName('Katelyn Solis')
 
 
-
--- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.OBRA ----------------------------------
 
 -- Filtrar as obras por nif do cliente
 GO
@@ -82,8 +76,9 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getObraByClientNif(111356719)
+
 
 
 -- Filtrar as obras por data de início e/ou de fim
@@ -97,12 +92,10 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getObraByDate('2023-05-10', '2023-05-28')
 
 
-
--- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO ----------------------------------
 
 -- Filtrar as obras e serviços por id da obra
 GO
@@ -117,8 +110,9 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getObraServicoByObra(19940064)
+
 
 
 -- Filtrar as obras e serviços por id do serviço
@@ -134,12 +128,10 @@ AS
     )
 GO
 
--- Test
+-- Teste
 SELECT * FROM getObraServicoByServico(201111)
 
 
-
--- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO ----------------------------------
 
 -- Filtrar as obras e empregados por id de obra
 GO
@@ -153,8 +145,9 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getObraEmpregadoByObra(19940038)
+
 
 
 -- Filtrar as obras e empregados por nif do empregado
@@ -169,8 +162,9 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getObraEmpregadoByEmpregado(567890321)
+
 
 
 -- Retornar o número total de horas de trabalho de um empregado
@@ -195,8 +189,9 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getTotalHoursByEmpregado(280932739)
+
 
 
 -- Retornar o número total de horas de todos os empregados
@@ -219,7 +214,7 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getTotalHoursAllEmployees()
 
 
@@ -236,8 +231,9 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getMaterialByCategory('Acabamentos')
+
 
 
 -- Filtrar os materiais de construção por nome
@@ -250,8 +246,9 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getMaterialByName('Capacetes')
+
 
 
 -- Filtrar os materiais de construção por unidades em armazém
@@ -264,8 +261,9 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getMaterialByQuantity(400)
+
 
 
 -- Retornar os materiais usados numa obra
@@ -280,12 +278,27 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getMateriaisByObra(19940089)
 
 
 
--- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.FORNECEDOR ----------------------------------
+-- Filtrar os materiais por encomenda
+GO
+CREATE FUNCTION getMateriaisByEncomenda(@id_enc INT) RETURNS TABLE
+AS
+    RETURN (
+        SELECT id_encomenda, id_material, nome AS nome_material, categoria AS categoria_material, custo
+        FROM EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL AS REL_ENC_MAT
+        JOIN EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC ON ENC.id = REL_ENC_MAT.id_encomenda
+        JOIN EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO AS MAT ON REL_ENC_MAT.id_material = MAT.id
+        WHERE id_encomenda = @id_enc
+    );
+GO
+
+-- Teste
+SELECT * FROM getMateriaisByEncomenda(1991001)
+
 
 
 -- Filtrar os fornecedores por nome
@@ -298,10 +311,9 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getFornecedorByName('MegaConstrução')
 
--- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.ENCOMENDA ----------------------------------
 
 
 -- Filtrar as encomendas por data, id do fornecedor e id da obra
@@ -328,6 +340,7 @@ GO
 SELECT * FROM getEncomendaByDateFornIdObraId ('2023-05-10', 208576294, 19940036)
 
 
+
 -- Retornar todas as encomendas
 GO
 CREATE FUNCTION getTotalEncomendas() RETURNS TABLE
@@ -341,6 +354,8 @@ GO
 
 -- Teste
 SELECT * FROM getTotalEncomendas()
+
+
 
 -- index fragmentation and rows
 GO
@@ -358,5 +373,5 @@ AS
     );
 GO
 
--- Test
+-- Teste
 SELECT * FROM getTablesInfo()

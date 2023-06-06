@@ -48,6 +48,10 @@ Para o ER as alterações que o nosso grupo fez também foram semelhantes às do
 ### Diagrama gerado a partir do DDL
 ![DDL Diagram!](DER_ER/EMPRESA_CONSTRUCAO_er_v2.png)
 
+Para testar as udf's ou store procedure's que nós criámos, desenvolvemos um script em SQL que tem como objetivo inserir dados nas diferentes tabelas que nós criámos.<br />
+
+[Insertions File](SQL_scripts/project_inserts.sql "InsertFile")
+
 ## SQL DML - Data Manipulation Language
 
 ### Formulario exemplo/Example Form
@@ -326,6 +330,10 @@ GO
 
 [SQL Indexes File](SQL_scripts/project_indexes.sql)
 
+<br />
+
+Utilizámos transações em algumas operações, maioritariamente em store procedure's, visto que estas são operações que envolvem várias instruções ou em alguns casos as queries/instruções envolvem adicionar/alterar/eliminar dados de várias tabelas. <br />
+
 ## Outras notas/Other notes
 
 O nosso grupo decidiu desenvolver a interface gráfica para a base de dados com WinAppSDK + WinUI 3 pois estas tecnologias fornecem um conjunto de ferramentas e bibliotecas que facilitam o desenvolvimento de uma aplicação Windows moderna e escalável com uma interface para o utilizador mais bonita e responsiva.
@@ -335,6 +343,7 @@ WinAppSDK é um conjunto de ferramentas e bibliotecas fornecidas pela Microsoft 
 WinUI 3 é uma estrutura de interface para o utilizador que é construída em cima do WinAppSDK. Eeste fornece um conjunto de controles e estilos moderno.
 
 Ao usar WinUI 3 e WinAppSDK para criar a interface gráfica, aproveitámos os seguintes benefícios:
+
 - O WinUI 3 fornece um conjunto de controles pré-construídos e estilos tal como referido anteriormente; <br />
 
 - WinAppSDK fornece uma variedade de APIs e bibliotecas que podem ser usadas para interagir com o sistema operativo Windows e outros componentes do sistema, como por exemplo, a existência de um modo escuro/claro.
@@ -344,4 +353,19 @@ Para o nosso grupo poder utilizar estas bibliotecas/ferramentas tivemos que sele
 ![Plugin's 1!](screenshots/plugins1.png "AnImage")
 
 ![Plugin's 2!](screenshots/plugins2.png "AnImage")
- 
+
+## Execução/Execution
+Para executar os ficheiros sql pela ordem certa:
+1. Executar o ficheiro project_drops.sql, caso a base de dados exista no servidor, caso contrário avançar para o próximo ponto;
+2. Executar o ficheiro project_ddl.sql para criar o schema e as respetivas tabelas;
+3. Executar o ficheiro project_inserts.sql para inserir dados nas tabelas criadas;
+4. Executar o ficheiro project_udfs.sql para criar as udf's e testá-las;
+5. Executar o ficheiro project_sps.sql para criar os store procedure's e testá-los;
+6. Executar o ficheiro project_triggers.sql para criar os triggers e testá-los;
+7. Executar o ficheiro project_indexes.sql para criar os índices;
+
+Com estes ficheiros executados a base dados encontra-se completa, logo pode-se executar a parte da interface gráfica no visual studio, no entanto esta só poderá ser executada caso todas as packages referidas acima tenham sido, caso contrário o visual studio irá pedir para instalar as packages em falta.
+
+## Conclusão
+
+Em conclusão, o nosso grupo considerou importante e interessante o desenvolvimento deste projeto final, pois ajudou-nos a melhor perceber como um sistema de bases de dados funciona. Consideramos que trabalhámos os 2 de forma igual e por isso consideramos que cada um teve 50% emm relação à percentagem de contribuições para o projeto final.

@@ -16,8 +16,7 @@ BEGIN
 END
 GO
 
-SELECT * FROM EMPRESA_CONSTRUCAO.SERVICO
--- Test
+-- Teste
 EXEC create_department 200411, 'Departamento de Redes'
 
 
@@ -41,9 +40,7 @@ BEGIN
 END
 GO
 
-SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO
-
--- Test
+-- Teste
 EXEC add_employee 101010101, 'T', 't', 't@t.pt', 910000000, 'teste', 'O', '1970-01-01', 750.43, 20041
 
 
@@ -68,8 +65,7 @@ BEGIN
 END
 GO
 
-SELECT * FROM EMPRESA_CONSTRUCAO.OBRA
-
+-- Teste
 EXEC create_obra 19940091, 'Rua São Miguel Açores, BAA', '2023-01-01', '2023-01-22', 287944069
 
 
@@ -90,9 +86,7 @@ BEGIN
 END
 GO
 
-SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE
-
--- Test
+-- Teste
 EXEC create_client 123741849, 'Maria', 'Beatriz', 'maria.beatriz@ua.pt', 234712984, 'Rua Desportiva de Alvas, ABC'
 
 
@@ -114,8 +108,9 @@ BEGIN
 
 END
 
--- Test
+-- Teste
 EXEC add_constr_material '1997016', 'Fundações e estruturas', 'Tijolos', 640
+
 
 -- Adicionar um fornecedor novo
 GO
@@ -133,8 +128,9 @@ BEGIN
        PRINT ERROR_MESSAGE()
    END CATCH
 END
+GO
 
--- Test
+-- Teste
 EXEC create_fornecedor 491723946, 'Construção Domingues', 295814065, 'domingues.constr@ua.pt', 'Rua da Padaria 2039, ACHS'
 
 
@@ -159,7 +155,7 @@ BEGIN
 END
 GO
 
--- Test
+-- Teste
 EXEC add_encomenda 1991021 ,'2023-05-03', 965781420, 19940051
 
 
@@ -182,7 +178,7 @@ BEGIN
 END
 GO
 
--- Test
+-- Teste
 EXEC add_empregado_obra 19940001, 280932739, '2023-04-15', '05:48:12'
 
 
@@ -230,7 +226,7 @@ BEGIN
 END
 GO
 
--- Test
+-- Teste
 EXEC add_service_obra 19940001, 201101
 
 
@@ -269,15 +265,14 @@ BEGIN
     END CATCH
 END
 GO
-SELECT * FROM EMPRESA_CONSTRUCAO.DEPARTAMENTO
 
--- Test
+-- Teste
 EXEC update_department 200411, 'Departamento de Segurança'
 
 
 -- Alterar os dados de um empregado
 GO
-CREATE PROCEDURE update_employee(
+CREATE PROCEDURE update_employee (
         @nif_empr INT,
         @first_name_empr VARCHAR(25),
         @last_name_empr VARCHAR(25),
@@ -312,64 +307,61 @@ BEGIN
                    @birth_date_old = E.data_nascimento,
                    @salary_old = E.salario
             FROM EMPRESA_CONSTRUCAO.EMPREGADO AS E
-            WHERE nif = @nif_empr OR nome_proprio = @first_name_empr OR apelido = @last_name_empr OR email = @email_empr OR telefone = @phone_number_empr OR morada = @address_empr OR data_nascimento = @birth_date_empr
-
-            PRINT @gender_empr_old
-            PRINT @gender_empr
+            WHERE E.nif = @nif_empr OR E.nome_proprio = @first_name_empr OR E.apelido = @last_name_empr OR E.email = @email_empr OR E.telefone = @phone_number_empr OR E.morada = @address_empr
 
             IF @nif_empr_old != @nif_empr
-                BEGIN
-                    UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET nif = @nif_empr WHERE nif = @nif_empr_old;
-                    PRINT 'Updated empregado nif with success'
-                END
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET nif = @nif_empr WHERE nif = @nif_empr_old;
+                PRINT 'Updated empregado nif with success'
+            END
 
             IF @first_name_old != @first_name_empr
-                BEGIN
-                    UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET nome_proprio = @first_name_empr WHERE nif = @nif_empr_old
-                    PRINT 'Updated empregado first name with success'
-                END
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET nome_proprio = @first_name_empr WHERE nif = @nif_empr_old
+                PRINT 'Updated empregado first name with success'
+            END
 
             IF @last_name_old != @last_name_empr
-                BEGIN
-                    UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET apelido = @last_name_empr WHERE nif = @nif_empr_old
-                    PRINT 'Updated empregado last name with success'
-                END
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET apelido = @last_name_empr WHERE nif = @nif_empr_old
+                PRINT 'Updated empregado last name with success'
+            END
 
             IF @email_empr_old != @email_empr
-                BEGIN
-                    UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET email = @email_empr WHERE nif = @nif_empr_old
-                    PRINT 'Updated empregado email with success'
-                END
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET email = @email_empr WHERE nif = @nif_empr_old
+                PRINT 'Updated empregado email with success'
+            END
 
             IF @phone_numer_old != @phone_number_empr
-                BEGIN
-                    UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET telefone = @phone_number_empr WHERE nif = @nif_empr_old
-                    PRINT 'Updated empregado phone number with success'
-                END
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET telefone = @phone_number_empr WHERE nif = @nif_empr_old
+                PRINT 'Updated empregado phone number with success'
+            END
 
             IF @address_empr_old != @address_empr
-                BEGIN
-                    UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET morada = ISNULL(@address_empr, morada) WHERE nif = @nif_empr_old
-                    PRINT 'Updated empregado address with success'
-                END
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET morada = @address_empr WHERE nif = @nif_empr_old
+                PRINT 'Updated empregado address with success'
+            END
 
-            IF @gender_empr_old != @gender_empr OR (@address_empr_old IS NULL)
-                BEGIN
-                    UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET genero = ISNULL(@gender_empr, genero) WHERE nif = @nif_empr_old
-                    PRINT 'Updated empregado gender with success'
-                END
+            IF @gender_empr_old != @gender_empr
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET genero = @gender_empr WHERE nif = @nif_empr_old
+                PRINT 'Updated empregado gender with success'
+            END
 
             IF @birth_date_old != @birth_date_empr
-                BEGIN
-                    UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET data_nascimento = ISNULL(@birth_date_empr, data_nascimento) WHERE nif = @nif_empr_old
-                    PRINT 'Updated empregado birth date with success'
-                END
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET data_nascimento = @birth_date_empr WHERE nif = @nif_empr_old
+                PRINT 'Updated empregado birth date with success'
+            END
 
             IF @salary_old != @salary_empr
-                BEGIN
-                    UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET salario = ISNULL(@salary_empr,salario) WHERE nif = @nif_empr_old
-                    PRINT 'Updated empregado salary with success'
-                END
+            BEGIN
+                UPDATE EMPRESA_CONSTRUCAO.EMPREGADO SET salario = @salary_empr WHERE nif = @nif_empr_old
+                PRINT 'Updated empregado salary with success'
+            END
         COMMIT
     END TRY
 
@@ -379,10 +371,9 @@ BEGIN
     END CATCH
 END
 GO
-SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO;
 
--- Test
-EXEC update_employee 858170528, 'Dário', 'Gaspar', 'dario.gaspar@ua.pt', 901738012, 'Rua 999 Porto Mós', 'M', '1936-03-28', '1934.40'
+-- Teste
+EXEC update_employee 91543871, 'Tiago', 'Parreira', 'tiago.parreira@ua.pt', 914381023, NULL, 'M', '1973-11-14', 4568.12
 
 
 -- Alterar os dados de um cliente
@@ -456,11 +447,9 @@ BEGIN
     END CATCH
 END
 GO
-SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE;
 
--- Test
+-- Teste
 EXEC update_client 991972284, 'Jessica', 'Carlson', 'jessica.carlson@ua.pt', 853042464, '753 Jackson River, Nicholasborough, DC 49673'
-EXEC update_client 105109164, 'Kelsey', 'Rogers', 'jamesjacob@example.net', 499934325, '2218 Chapman Dam Apt. 548, East Lisa, ND 05133'
 
 
 -- Alterar os dados de uma obra
@@ -514,10 +503,9 @@ BEGIN
         ROLLBACK
     END CATCH
 END
-SELECT * FROM EMPRESA_CONSTRUCAO.OBRA
 GO
 
--- Test
+-- Teste
 EXEC update_obra 19940090, '347 Dunn Island, Daughertyshire, OH 57189', '2023-05-11', '2023-06-07'
 
 
@@ -577,10 +565,9 @@ BEGIN
         PRINT ERROR_MESSAGE()
     END CATCH
 END
-SELECT * FROM EMPRESA_CONSTRUCAO.FORNECEDOR
 GO
 
--- Test
+-- Teste
 EXEC update_fornecedor 491723945,'Construção Domingos', 295814066, 'domingos.constr@ua.pt', 'Rua da Pradaria 2039, ACHS'
 
 
@@ -634,9 +621,8 @@ BEGIN
 END
 GO
 
--- Test
+-- Teste
 EXEC update_mat_constr 1997017, 'Equipamentos de Proteção','Luvas', 1250
-
 
 
 -- Eliminar um departamento
@@ -658,8 +644,7 @@ BEGIN
 END
 GO
 
--- Test
-SELECT * FROM EMPRESA_CONSTRUCAO.DEPARTAMENTO
+-- Teste
 EXEC delete_department 200411
 
 
@@ -682,8 +667,7 @@ BEGIN
 END
 GO
 
--- Test
-SELECT * FROM EMPRESA_CONSTRUCAO.EMPREGADO
+-- Teste
 EXEC delete_employee 624521804
 
 
@@ -706,8 +690,7 @@ BEGIN
 END
 GO
 
--- Test
-SELECT * FROM EMPRESA_CONSTRUCAO.OBRA
+-- Teste
 EXEC delete_obra 19940021
 
 
@@ -730,8 +713,7 @@ BEGIN
 END
 GO
 
--- Test
-SELECT * FROM EMPRESA_CONSTRUCAO.CLIENTE
+-- Teste
 EXEC delete_client 245475150
 
 
@@ -751,8 +733,7 @@ BEGIN
 END
 GO
 
--- Test
-SELECT * FROM EMPRESA_CONSTRUCAO.FORNECEDOR
+-- Teste
 EXEC delete_fornecedor 491723945
 
 
@@ -775,7 +756,7 @@ BEGIN
 END
 GO
 
--- Test
+-- Teste
 SELECT * FROM EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL
 
 
@@ -795,5 +776,5 @@ BEGIN
 END
 GO
 
--- Test
-EXEC delete_mat_constr _1997017
+-- Teste
+EXEC delete_mat_constr 1997017

@@ -10,6 +10,7 @@ INSERT INTO EMPRESA_CONSTRUCAO.DEPARTAMENTO(id, nome)
            (20049, 'Departamento de Qualidade e Segurança'),
            (200410, 'Departamento de Marketing e Vendas');
 
+
 INSERT INTO EMPRESA_CONSTRUCAO.EMPREGADO(nif, nome_proprio, apelido, email, telefone, morada, genero, data_nascimento, salario,id_departamento)
     VALUES (123456789, 'João', 'Silva','jao.silva@ua.pt', 91234678, 'Rua das Flores 123 Lisboa', 'M', '1990/05/15', 1300.34, 20041),
            (987654321, 'Ana', 'Santos','ana.santos@ua.pt', 923456789, NULL, NULL, '1985-08-20', 1249.49, 20042),
@@ -48,6 +49,7 @@ INSERT INTO EMPRESA_CONSTRUCAO.CEO(nif_empregado)
     VALUES (953832401),
            (878649173);
 
+
 INSERT INTO EMPRESA_CONSTRUCAO.SERVICO(id_S, categoria, id_departamento)
     VALUES (201101, 'Construção Residencial', 20047),
            (201102, 'Construção Comercial', 20044),
@@ -64,6 +66,7 @@ INSERT INTO EMPRESA_CONSTRUCAO.SERVICO(id_S, categoria, id_departamento)
            (201113, 'Restauração de Património Histórico', 20049),
            (201114, 'Obras de Engenharia Hidráulica', 20043),
            (201115, 'Construção de Estruturas Modulares', 20048);
+
 
 INSERT INTO EMPRESA_CONSTRUCAO.CLIENTE(nif, nome_proprio, apelido, email, telefone, morada)
     VALUES  (538915867, 'Tammy', 'Jackson', 'emma93@example.net', 436256307, 'USNS Moss, FPO AP 24703'),
@@ -221,6 +224,7 @@ INSERT INTO EMPRESA_CONSTRUCAO.OBRA(ID, LOCALIZACAO, DATA_INICIO, DATA_FIM, NIF_
             (19940089, '0487 Philip Island, South Marvin, FL 49358', '2023-05-04', '2023-05-28', 685452999),
             (19940090, '347 Dunn Island, Daughertyshire, OH 57189', '2023-05-11', '2023-06-07', 911847104);
 
+
 INSERT INTO EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO(ID_OBRA, ID_SERVICO)
     VALUES  (19940001, 201102),
             (19940002, 201113),
@@ -312,6 +316,7 @@ INSERT INTO EMPRESA_CONSTRUCAO.REL_OBRA_SERVICO(ID_OBRA, ID_SERVICO)
             (19940088, 201107),
             (19940089, 201104),
             (19940090, 201109);
+
 
 INSERT INTO EMPRESA_CONSTRUCAO.REL_OBRA_EMPREGADO(id_obra, nif_empregado, dia, horas)
     VALUES  (19940001, 280932739,'2023-03-30', '07:34:12'),
@@ -423,12 +428,14 @@ INSERT INTO EMPRESA_CONSTRUCAO.MATERIAL_CONSTRUCAO(id, categoria, nome, unidades
             (1997014, 'Ferramentas Manuais', 'Chaves', 710),
             (1997015, 'Ferramentas Elétricas', 'Serras Elétricas', 40);
 
+
 INSERT INTO EMPRESA_CONSTRUCAO.FORNECEDOR(nif, nome, telefone, email, morada)
     VALUES  (817439603, 'ConstruMat', 203949321, 'constrmat@ua.pt', 'Rua dos Materiais, 123, Cidade Nova, Estado ABC, CEP 12345-678'),
             (208576294, 'Casa da Construção', 292854374,'casac@ua.pt', 'Avenida das Obras, 456, Bairro Construtivo, Estado XYZ, CEP 98765-432'),
             (643872905, 'Materiais & Cia', 273184931,'cia@ua.pt', 'Rua dos Mestres, 789, Vila das Edificações, Estado QWE, CEP 54321-876'),
             (965781420, 'MegaConstrução', 294830184,'mega.co@ua.pt', 'Rua das Estruturas, 987, Loteamento Grandioso, Estado UVW, CEP 87654-321'),
             (312095648, 'Fornecedora Construlíder', 294714025,'forn.lider@ua.pt', 'Rua das Ferragens, 321, Loteamento Residencial, Estado MNO, CEP 56789-012');
+
 
 INSERT INTO EMPRESA_CONSTRUCAO.ENCOMENDA(id, data, nif_fornecedor, id_obra)
     VALUES  (1991001, '2023-04-29', 643872905, 19940014),
@@ -452,6 +459,7 @@ INSERT INTO EMPRESA_CONSTRUCAO.ENCOMENDA(id, data, nif_fornecedor, id_obra)
             (1991019, '2023-04-28', 312095648, 19940010),
             (1991020, '2023-05-01', 208576294, 19940032);
 
+
 INSERT INTO EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL(id_encomenda, id_material, custo)
     VALUES  (1991001, 1997012, 1094.67),
             (1991002, 1997003, 5785.30),
@@ -473,6 +481,7 @@ INSERT INTO EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL(id_encomenda, id_material,
             (1991018, 1997014, 371.04),
             (1991019, 1997013, 743.96),
             (1991020, 1997001, 831.49);
+
 
 INSERT INTO EMPRESA_CONSTRUCAO.REL_OBRA_MATERIAL(id_obra, id_material)
     VALUES  (19940012, 1997011),
@@ -565,57 +574,3 @@ INSERT INTO EMPRESA_CONSTRUCAO.REL_OBRA_MATERIAL(id_obra, id_material)
             (19940050, 1997007),
             (19940033, 1997004),
             (19940044, 1997005);
-
-
-
-INSERT INTO EMPRESA_CONSTRUCAO.REL_OBRA_ENCOMENDA(id_obra, id_encomenda)
-    VALUES  (19940008, 1991009),
-            (19940017, 1991016),
-            (19940042, 1991004),
-            (19940081, 1991002),
-            (19940064, 1991017),
-            (19940037, 1991014),
-            (19940025, 1991001),
-            (19940035, 1991018),
-            (19940036, 1991014),
-            (19940075, 1991012),
-            (19940064, 1991002),
-            (19940074, 1991010),
-            (19940076, 1991008),
-            (19940048, 1991018),
-            (19940010, 1991012),
-            (19940065, 1991013),
-            (19940065, 1991001),
-            (19940029, 1991012),
-            (19940024, 1991012),
-            (19940036, 1991009),
-            (19940067, 1991009),
-            (19940008, 1991007),
-            (19940069, 1991012),
-            (19940054, 1991019),
-            (19940018, 1991003),
-            (19940013, 1991006),
-            (19940071, 1991003),
-            (19940065, 1991014),
-            (19940086, 1991002),
-            (19940014, 1991013),
-            (19940032, 1991019),
-            (19940035, 1991011),
-            (19940071, 1991009),
-            (19940017, 1991002),
-            (19940059, 1991011),
-            (19940067, 1991013),
-            (19940015, 1991019),
-            (19940036, 1991003),
-            (19940031, 1991016),
-            (19940013, 1991012),
-            (19940047, 1991010),
-            (19940049, 1991013),
-            (19940074, 1991007),
-            (19940084, 1991009),
-            (19940007, 1991001),
-            (19940041, 1991001),
-            (19940066, 1991016),
-            (19940040, 1991019),
-            (19940060, 1991019),
-            (19940055, 1991011);
