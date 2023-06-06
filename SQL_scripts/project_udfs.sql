@@ -303,67 +303,29 @@ SELECT * FROM getFornecedorByName('MegaConstrução')
 
 -- ---------------------------------- UDF'S for EMPRESA_CONSTRUCAO.ENCOMENDA ----------------------------------
 
--- Filtrar as encomendas por data
+
+-- Filtrar as encomendas por data, id do fornecedor e id da obra
 GO
-CREATE FUNCTION getEncomendByDate(@delievery_date DATE) RETURNS TABLE
-AS
-    RETURN (
-        SELECT ENC.data AS data_entrega, ENC.nif_fornecedor,
-               F.nome AS nome_fornecedor,
-               REL_ENC_MAT.custo AS custo_total
-        FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
-        JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS F ON F.nif = ENC.nif_fornecedor
-        JOIN EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL AS REL_ENC_MAT ON ENC.id = REL_ENC_MAT.id_encomenda
-        WHERE data >= @delievery_date
-    );
-GO
-
--- Test
-SELECT * FROM getEncomendByDate('2023-05-01')
-
-
--- Filtrar as encomendas por nif do fornecedor
-GO
-CREATE FUNCTION getEncomendaByFornId(@forn_id INT) RETURNS TABLE
-AS
-    RETURN (
-        SELECT ENC.nif_fornecedor, FORN.nome AS nome_fornecedor, FORN.email AS email_fornecedor, FORN.telefone AS telefone_fornecedor, ENC.id AS id_encomenda, REL_ENC_MAT.custo AS custo_total
-        FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
-        JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS FORN ON ENC.nif_fornecedor = FORN.nif
-        JOIN EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL AS REL_ENC_MAT ON ENC.id = REL_ENC_MAT.id_encomenda
-        WHERE nif_fornecedor = @forn_id
-    );
-GO
-
--- Test
-SELECT * FROM getEncomendaByFornId(817439603)
-
-
--- Filtrar as encomendas por id da obra
-GO
-CREATE FUNCTION getEncomendaByObraId(@obra_id INT) RETURNS TABLE
+CREATE FUNCTION getEncomendaByDateFornIdObraId(@del_date DATE, @forn_nif INT, @obra_id INT) RETURNS TABLE
 AS
     RETURN (
         SELECT
-            ENC.id_obra,
-            O.localizacao AS obra_localizacao,
-            O.data_inicio AS obra_data_inicio,
-            O.data_fim AS obra_data_fim,
+            ENC.id AS id_encomenda,
+            ENC.data AS data_encomenda,
             ENC.nif_fornecedor,
-            ENC.id AS encomenda_id,
-            ENC.data AS encomenda_data,
             F.nome AS nome_fornecedor,
-            REL_ENC_MAT.custo AS custo_total
+            O.id AS id_obra
         FROM EMPRESA_CONSTRUCAO.ENCOMENDA AS ENC
-        JOIN EMPRESA_CONSTRUCAO.OBRA AS O ON ENC.id_obra = O.id
-        JOIN EMPRESA_CONSTRUCAO.FORNECEDOR AS F ON ENC.nif_fornecedor = F.nif
-        JOIN EMPRESA_CONSTRUCAO.REL_ENCOMENDA_MATERIAL AS REL_ENC_MAT ON ENC.id = REL_ENC_MAT.id_encomenda
-        WHERE id_obra = @obra_id
+        JOIN EMPRESA_CONSTRUCAO.FORNECEDOR F on F.nif = ENC.nif_fornecedor
+        JOIN EMPRESA_CONSTRUCAO.OBRA AS O on O.id = ENC.id_obra
+        WHERE (@del_date IS NULL OR data >= @del_date) AND
+        (@forn_nif IS NULL OR nif_fornecedor = @forn_nif) AND
+        (@obra_id IS NULL OR id_obra = @obra_id)
     );
 GO
 
--- Test
-SELECT * FROM getEncomendaByObraId(19940071)
+-- Teste
+SELECT * FROM getEncomendaByDateFornIdObraId ('2023-05-10', 208576294, 19940036)
 
 
 -- Retornar todas as encomendas
