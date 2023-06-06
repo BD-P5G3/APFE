@@ -294,7 +294,7 @@ CREATE FUNCTION getFornecedorByName(@forn_name VARCHAR(50)) RETURNS TABLE
 AS
     RETURN (
         SELECT * FROM EMPRESA_CONSTRUCAO.FORNECEDOR
-        WHERE nome = @forn_name
+        WHERE nome LIKE '%' + @forn_name + '%'
     );
 GO
 
