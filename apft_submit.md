@@ -1,30 +1,8 @@
 # BD: Trabalho Prático APF-T
 
-**Grupo**: PXGY
+**Grupo**: P5G3
 - José Gameiro, MEC: 108840
 - Rúben Garrido, MEC: 107927
-
-# Instructions - TO REMOVE
-
-Este template é flexível.
-É sugerido seguir a estrutura, links de ficheiros e imagens, mas adicione ou remova conteúdo sempre que achar necessário.
-
----
-
-This template is flexible.
-It is suggested to follow the structure, file links and images but add more content where necessary.
-
-The files should be organized with the following nomenclature:
-
-- sql\01_ddl.sql: mandatory for DDL
-- sql\02_sp_functions.sql: mandatory for Store Procedure, Functions,... 
-- sql\03_triggers.sql: mandatory for triggers
-- sql\04_db_init.sql: scripts to init the database (i.e. inserts etc.)
-- sql\05_any_other_matter.sql: any other scripts.
-
-Por favor remova esta secção antes de submeter.
-
-Please remove this section before submitting.
 
 ## Introdução / Introduction
  
@@ -328,28 +306,42 @@ Durante este processo, tivemos o cuidado de irmos rever todas as entidades e sua
 
 ## Índices/Indexes
 
-Descreva os indices criados. Junte uma cópia do SQL de criação do indice.
-Describe the indexes created. Attach a copy of the SQL to create the index.
+Os índices que foram criados na tabela EMPREGADO e CLIENTE da base de dados EMPRESA_CONSTRUCAO têm como objetivo otimizar a velocidade e eficiência das consultas realizadas nesses campos.<br />
+
+No caso do índice idxEmpName, ele foi criado na tabela EMPREGADO para os campos nome_proprio e apelido. Isso significa que a base de dados irá criar uma estrutura de índice específica para esses campos, permitindo uma busca mais rápida e eficiente por registros que correspondam aos valores informados nesses atributos.<br />
+
+Da mesma forma, o índice idxClientName foi criado na tabela CLIENTE para os campos nome_proprio e apelido. Essa indexação tem como objetivo acelerar as consultas que envolvem a busca por registros de clientes com base nos seus nomes próprios e apelidos. 
+
+<br />
 
 ```sql
--- Create an index to speed
-CREATE INDEX index_name ON table_name (column1, column2, ...);
+CREATE INDEX idxEmpName ON EMPRESA_CONSTRUCAO.EMPREGADO(nome_proprio,apelido);
+GO
+
+CREATE INDEX idxClientName ON EMPRESA_CONSTRUCAO.CLIENTE(nome_proprio,apelido);
+GO
 ```
 
 ## SQL Programming: Stored Procedures, Triggers, UDF
 
 [SQL SPs File]( SQL_scripts/project_sps.sql "SQLFileQuestion")
 
-[SQL UDFs File]( SQL_scripts/"SQLFileQuestion")
+[SQL UDFs File]( SQL_scripts/project_udfs.sql "SQLFileQuestion")
 
-[SQL Triggers File](sql/03_triggers.sql "SQLFileQuestion")
+[SQL Triggers File](SQL_scripts/project_triggers.sql "SQLFileQuestion")
+
+[SQL Indexes File](SQL_scripts/project_indexes.sql)
 
 ## Outras notas/Other notes
 
-### Dados iniciais da dabase de dados/Database init data
+O nosso grupo decidiu desenvolver a interface gráfica para a base de dados com WinAppSDK + WinUI 3 pois estas tecnologias fornecem um conjunto de ferramentas e bibliotecas que facilitam o desenvolvimento de uma aplicação Windows moderna e escalável com uma interface para o utilizador mais bonita e responsiva.
 
-[Indexes File](sql/01_ddl.sql "SQLFileQuestion")
+WinAppSDK é um conjunto de ferramentas e bibliotecas fornecidas pela Microsoft para ajudar os desenvolvedores a criar aplicações para o Windows. Este inclui recursos como modelos de projeto, APIs, entre outros.
 
+WinUI 3 é uma estrutura de interface para o utilizador que é construída em cima do WinAppSDK. Eeste fornece um conjunto de controles e estilos moderno.
 
+Ao usar WinUI 3 e WinAppSDK para criar a interface gráfica, aproveitámos os seguintes benefícios:
+- O WinUI 3 fornece um conjunto de controles pré-construídos e estilos tal como referido anteriormente; <br />
 
+- WinAppSDK fornece uma variedade de APIs e bibliotecas que podem ser usadas para interagir com o sistema operativo Windows e outros componentes do sistema, como por exemplo, a existência de um modo escuro/claro.
  

@@ -53,7 +53,6 @@ DROP FUNCTION IF EXISTS getTotalEncomendas;
 DROP FUNCTION IF EXISTS getTablesInfo;
 
 
-
 -- Drop Store Procedure's
 DROP PROCEDURE IF EXISTS create_department;
 DROP PROCEDURE IF EXISTS add_employee;
@@ -80,7 +79,11 @@ DROP PROCEDURE IF EXISTS delete_client;
 DROP PROCEDURE IF EXISTS delete_fornecedor;
 
 
-
 -- Drop trigger's
 DROP TRIGGER IF EXISTS work_day_check;
 DROP TRIGGER IF EXISTS salary_check;
+
+
+-- Drop indíces
+DROP INDEX IF EXISTS idxEmpName;
+DROP INDEX IF EXISTS idxClientName;
