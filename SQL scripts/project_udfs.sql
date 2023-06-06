@@ -190,7 +190,8 @@ AS
           nif_empregado = @empr_nif
         GROUP BY
           REL_O_E.nif_empregado,
-          E.nome_proprio + ' ' + E.apelido
+          E.nome_proprio,
+          E.apelido
     );
 GO
 
@@ -213,7 +214,8 @@ AS
           JOIN EMPRESA_CONSTRUCAO.EMPREGADO AS E ON REL_O_E.nif_empregado = E.nif
         GROUP BY
           REL_O_E.nif_empregado,
-          E.nome_proprio + ' ' + E.apelido
+          E.nome_proprio,
+          E.apelido
     );
 GO
 
