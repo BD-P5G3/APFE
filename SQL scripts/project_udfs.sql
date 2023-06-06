@@ -378,7 +378,7 @@ AS
         INNER JOIN sys.tables t on t.object_id = ips.object_id
         INNER JOIN sys.schemas s on t.schema_id = s.schema_id
         INNER JOIN sys.indexes i ON (ips.object_id = i.object_id) AND (ips.index_id = i.index_id)
-        WHERE s.name = 'EMPRESA_CONSTRUCAO'
+        WHERE s.name = 'EMPRESA_CONSTRUCAO' AND t.name NOT LIKE 'REL_%'
     );
 GO
 

@@ -49,6 +49,8 @@ DROP FUNCTION IF EXISTS getEncomendByDate;
 DROP FUNCTION IF EXISTS getEncomendaByFornId;
 DROP FUNCTION IF EXISTS getEncomendaByObraId;
 
+DROP FUNCTION IF EXISTS getTablesInfo;
+
 
 
 -- Drop Store Procedure's
